@@ -71,7 +71,7 @@ public class DBConfig {
     public SqlSessionFactoryBean sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setTypeAliasesPackage("com.cool.entity");
+        sessionFactory.setTypeAliasesPackage("com.fanhunoo.clover.entity");
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
         return sessionFactory;
     }

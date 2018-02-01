@@ -23,18 +23,6 @@ public class User extends BaseEntity {
     //最后登陆时间
     private Date lastLoginTime;
 
-    public User() {}
-    public User(User user) {
-        this.id = user.getId();
-        this.passWord = user.getPassWord();
-        this.userName = user.getUserName();
-        this.realName = user.getRealName();
-        this.phone = user.getPhone();
-        this.orgId = user.getOrgId();
-        this.remarkes = user.getRemarkes();
-        this.lastLoginTime = user.getLastLoginTime();
-    }
-
     public Integer getId() {
         return id;
     }

@@ -6,6 +6,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ *  http://address:port/swagger-ui.html 访问swagger2生成的在线api
+ */
 @EnableSwagger2
 @Configuration
 @ComponentScan(basePackages = "com.fanhunoo.clover",

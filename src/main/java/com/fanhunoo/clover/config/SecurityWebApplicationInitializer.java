@@ -4,7 +4,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 
 /**
  * 配置Delegating-FilterProxy
- * AbstractSecurityWebApplicationInitializer实现了 WebApplication-Initializer，
+ * AbstractSecurityWebApplicationInitializer实现了 WebApplicationInitializer，
  * 因此Spring会发现它，并用它 在Web容器中注册DelegatingFilterProxy
  * 等价于xml配置
  * <filter>

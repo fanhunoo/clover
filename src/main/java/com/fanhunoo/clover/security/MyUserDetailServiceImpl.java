@@ -20,7 +20,6 @@ import java.util.Set;
  * 就是在登录时的认证操作交给Spring Security.在此处需要提供给当前登录用户所拥有的权限。
  * 即根据用户名查询上面t_resources表中的resKey 拼凑成”ROLE_XXX“ 这样形式的字符串所组成的list ，交给spirngSecurity。
  */
-//@Component("myUserDetailService")
 public class MyUserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private IUserService userService;

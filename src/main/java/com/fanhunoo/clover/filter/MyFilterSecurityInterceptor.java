@@ -47,17 +47,18 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
         invoke(fi);
     }
 
+    /**
+     * object为FilterInvocation对象
+     * super.beforeInvocation(fi);源码
+     * 1.获取请求资源的权限
+     * 执行Collection<ConfigAttribute> attributes = SecurityMetadataSource.getAttributes(object);
+     * 2.是否拥有权限
+     * this.accessDecisionManager.decide(authenticated, object, attributes);
+     * fi里面有一个被拦截的url
+     * 里面调用MyInvocationSecurityMetadataSource的getAttributes(Object object)这个方法获取fi对应的所有权限
+     * 再调用MyAccessDecisionManager的decide方法来校验用户的权限是否足够
+     */
     private void invoke(FilterInvocation fi) throws IOException, ServletException {
-        // object为FilterInvocation对象
-        //super.beforeInvocation(fi);源码
-        //1.获取请求资源的权限
-        //执行Collection<ConfigAttribute> attributes = SecurityMetadataSource.getAttributes(object);
-        //2.是否拥有权限
-        //this.accessDecisionManager.decide(authenticated, object, attributes);
-//      System.err.println(" ---------------  MySecurityFilter invoke--------------- ");
-        //fi里面有一个被拦截的url
-        //里面调用MyInvocationSecurityMetadataSource的getAttributes(Object object)这个方法获取fi对应的所有权限
-        //再调用MyAccessDecisionManager的decide方法来校验用户的权限是否足够
         InterceptorStatusToken token = super.beforeInvocation(fi);
         try {
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());

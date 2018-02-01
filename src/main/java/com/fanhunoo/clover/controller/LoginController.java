@@ -43,6 +43,7 @@ public class LoginController {
             if(exception instanceof org.springframework.security.authentication.BadCredentialsException){
                 errorMsg = "用户名或密码错误";
             }
+            logger.info("------:"+errorMsg);
         }
         if (logout != null) {
             logoutMsg = "您已经成功退出";

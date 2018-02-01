@@ -21,7 +21,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 
     /**
      * 配置jsp视图解析器
-     * @return
      */
     @Bean
     public ViewResolver viewResolver(){
@@ -34,7 +33,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     }
     /**
      * 配置freeMarker视图解析器
-     * @return
      */
     @Bean
     public FreeMarkerViewResolver freeMarkerViewResolver() {
@@ -60,8 +58,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 
     /**
      * 配置静态资源的处理
-     * 将对静态资源的请求转发到Servlet容器中默认的Servlet上，而不是使用DispatcherServlet本身来处理 此类请求
-     * @param configurer
+     * 将对静态资源的请求转发到Servlet容器中默认的Servlet上，而不是使用DispatcherServlet本身来处理此类请求
      */
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer){

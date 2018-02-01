@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 权限配置资源管理器
- * 加载资源与权限的对应关系  http://blog.csdn.net/poorCoder_/article/details/70231779
+ * 加载资源与权限的对应关系
  */
 @Component
 public class MySecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
@@ -40,8 +40,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
      * @PostConstruct是Java EE 5引入的注解，
      * Spring允许开发者在受管Bean中使用它。当DI容器实例化当前受管Bean时，
      * @PostConstruct注解的方法会被自动触发，从而完成一些初始化工作，
-     *
-     * //加载所有资源与权限的关系
+     * 加载所有资源与权限的关系
      */
     @PostConstruct
     private void loadResourceDefine() {
@@ -60,29 +59,13 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     //返回所请求资源所需要的权限
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
-        //  System.out.println("requestUrl is " + requestUrl);
         if(resourceMap == null) {
             loadResourceDefine();
         }
-        //System.err.println("resourceMap.get(requestUrl); "+resourceMap.get(requestUrl));
         if(requestUrl.contains("?")){
             requestUrl = requestUrl.substring(0,requestUrl.indexOf("?"));
         }
         return resourceMap.get(requestUrl);
-//
-//        if(map ==null) loadResourceDefine();
-//        //object 中包含用户请求的request 信息
-//        HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
-//        AntPathRequestMatcher matcher;
-//        String resUrl;
-//        for(Iterator<String> iter = map.keySet().iterator(); iter.hasNext(); ) {
-//            resUrl = iter.next();
-//            matcher = new AntPathRequestMatcher(resUrl);
-//            if(matcher.matches(request)) {
-//                return map.get(resUrl);
-//            }
-//        }
-//        return null;
     }
 
 

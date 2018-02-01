@@ -36,7 +36,6 @@
                 <#if errorMsg??>
                     <div style="height: 30px;width: 100%;"><span style="color: red;margin: auto auto">${errorMsg!}</span></div>
                 </#if>
-                <!--<div style="height: 30px;width: 100%;margin: auto auto"><span style="color: red;margin: auto auto">忘记密码</span></div>-->
             </form>
         </div>
         <script type="text/javascript" src="./layui/layui.js"></script>

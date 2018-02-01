@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,10 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.header.HeaderWriter;
-import org.springframework.security.web.header.HeaderWriterFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
 
@@ -29,23 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Resource
 	private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
 
-//	@Resource(name="myUserDetailService")
-//	private UserDetailsService myUserDetailService;
-
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		//启用内存用户存储
-        /*auth.inMemoryAuthentication()
-        .withUser("user1").password("123456").roles("USER").and()
-        .withUser("admin").password("admin").roles("USER","ADMIN");*/
-		//
-		//给予数据库表认证
-        /*auth.jdbcAuthentication().dataSource(dataSource)
-        .usersByUsernameQuery("select username,password,enable from t_user where username=?")
-        .authoritiesByUsernameQuery("select username,rolename from t_role where username=?");
-        */
-        //使用security提供的BCryptPasswordEncoder加密
-//		auth.userDetailsService(myUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
 		auth.authenticationProvider(authenticationProvider());
 	}
 
@@ -80,11 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
-//			.usernameParameter("username")//默认就是此值
-//			.passwordParameter("password")//默认就是此值
-			.loginPage("/login")// 指定登录页面的请求路径 // default is /login with an HTTP get
+			.loginPage("/login")// 指定登录页面的请求路径 default is /login with an HTTP get
 			.failureUrl("/login?error=true")//登录失败后跳转的路径 default is /login?error
-//			.loginProcessingUrl("/login")// default is /login with an HTTP post
             .defaultSuccessUrl("/home")//登录成功后默认跳转的路径
             .and()
             .csrf()//启用防跨站伪请求攻击，默认启用
