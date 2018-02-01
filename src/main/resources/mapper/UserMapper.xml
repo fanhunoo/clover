@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.fanhunoo.clover.dao.IUserDao">
+    <resultMap id="user" type="com.fanhunoo.clover.entity.User">
+        <result property="id" column="ID"/>
+        <result property="passWord" column="PASS_WORD"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="realName" column="REAL_NAME"/>
+        <result property="phone" column="PHONE"/>
+        <result property="status" column="STATUS"/>
+        <result property="orgId" column="ORG_ID"/>
+        <result property="remarkes" column="REMARKES"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="createPer" column="CREATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updatePer" column="UPDATE_PER"/>
+        <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ID, PASS_WORD, USER_NAME, REAL_NAME, PHONE, STATUS, ORG_ID, REMARKES, CREATE_PER, UPDATE_TIME, UPDATE_PER, CREATE_TIME, LAST_LOGIN_TIME
+    </sql>
+
+    <select id="selectUser" resultMap="user" parameterType="int">
+         SELECT
+        <include refid="Base_Column_List" />
+        FROM t_sys_user WHERE id  = #{id}
+    </select>
+
+    <!-- 登录 -->
+    <select id="findUserByName" resultMap="user" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List" />
+		FROM t_sys_user
+		WHERE USER_NAME=#{username}
+    </select>
+
+    <!-- 登录 -->
+    <select id="selectLogin" resultMap="user" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List" />
+        from t_sys_user
+        where USER_NAME = #{userName,jdbcType=VARCHAR} and  PASS_WORD = #{passWord,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
