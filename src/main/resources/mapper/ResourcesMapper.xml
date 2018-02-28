@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanhunoo.clover.dao.IResourcesDao">
+    <resultMap id="resources" type="com.fanhunoo.clover.entity.Resources">
+        <result property="createPer" column="CREATE_PER"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="icon" column="ICON"/>
+        <result property="id" column="ID"/>
+        <result property="key" column="KEY"/>
+        <result property="name" column="NAME"/>
+        <result property="parentId" column="PARENT_ID"/>
+        <result property="remarkes" column="REMARKES"/>
+        <result property="sort" column="SORT"/>
+        <result property="type" column="TYPE"/>
+        <result property="updatePer" column="UPDATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="url" column="URL"/>
+    </resultMap>
+
+    <select id="queryAll" resultMap="resources">
+        SELECT T.* FROM T_SYS_RESOURCES T
+    </select>
+
+    <select id="loadMenu" resultMap="resources" parameterType="java.util.Map">
+        SELECT RE.*
+        FROM T_SYS_RESOURCES RE,T_SYS_PERMISSION RR,T_SYS_AUTH UR,T_SYS_USER U
+        WHERE RE.ID = RR.RESOURCES_ID AND RR.ROLE_ID = UR.ROLE_ID
+        AND UR.USER_ID = U.ID AND U.USER_NAME = #{username}
+        <if test='type!=null'>
+            AND re.type=#{type}
+        </if>
+        <if test='parentId!=null and parentId!=""'>
+            and re.parent_id=#{parentId}
+        </if>
+        order by sort
+    </select>
+
+</mapper>

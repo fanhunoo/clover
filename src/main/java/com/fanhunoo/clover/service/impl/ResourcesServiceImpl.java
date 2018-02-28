@@ -14,7 +14,7 @@ public class ResourcesServiceImpl implements IResourcesService {
     private IResourcesDao resourcesDao;
 
     @Override
-    public List<Resources> loadMenu(String userName) {
-        return resourcesDao.loadMenu(userName);
+    public List<Resources> loadMenu(String userName,Integer type,String parentId) {
+        return resourcesDao.loadMenu(userName,type,parentId);
     }
 }

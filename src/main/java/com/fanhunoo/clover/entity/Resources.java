@@ -44,6 +44,20 @@ public class Resources extends BaseEntity {
      */
     private String icon;
 
+
+    /**
+     * 子菜单的json
+     */
+    private String chirdJson;
+
+    public String getChirdJson() {
+        return chirdJson;
+    }
+
+    public void setChirdJson(String chirdJson) {
+        this.chirdJson = chirdJson;
+    }
+
     public String getId() {
         return id;
     }

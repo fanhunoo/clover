@@ -3,6 +3,7 @@ package com.fanhunoo.clover.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -43,6 +44,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
         freeMarkerViewResolver.setRequestContextAttribute("basePath");
         freeMarkerViewResolver.setSuffix(".ftl");
         freeMarkerViewResolver.setOrder(0);
+        //把Spring的RequestContext对象暴露为变量request;利用${request.contextPath}来获取应用程序的contextPath
+        freeMarkerViewResolver.setRequestContextAttribute("request");
         return freeMarkerViewResolver;
     }
     /**
@@ -64,5 +67,4 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer){
         configurer.enable();
     }
-
 }

@@ -7,18 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    @Autowired
+    @Resource
     private IUserDao userDao;
-
-    @Override
-    public User selectUser(Integer id) {
-        return userDao.selectUser(id);
-    }
 
     @Override
     public User findUserByName(String userName) {
@@ -26,22 +23,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User selectLogin(String userName, String passWord) {
-        Map<String,String> params = new HashMap<>(16);
-        params.put("userName",userName);
-        params.put("passWord",passWord);
-        return userDao.selectLogin(params);
-    }
-
-
-
-
-    /**
-     * 加密密码
-     */
-    public void encryptPassword(User user){
-        String password = user.getPassWord();
-        password = new BCryptPasswordEncoder().encode(password);
-        user.setPassWord(password);
+    public List<User> findUsersBy(Integer orgId) {
+        return userDao.findUsersBy(orgId);
     }
 }

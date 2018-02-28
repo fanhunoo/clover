@@ -22,9 +22,9 @@ import java.io.IOException;
  */
 @Component
 public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
-    @Autowired
+    @Resource
     private MySecurityMetadataSource securityMetadataSource;
-    @Autowired
+    @Resource
     private MyAccessDecisionManager accessDecisionManager;
 
     @Resource
@@ -76,7 +76,7 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
     }
 
     @Override
-    public Class<? extends Object> getSecureObjectClass() {
+    public Class<?> getSecureObjectClass() {
         //下面的MyAccessDecisionManager的supports方面必须放回true,否则会提醒类型错误
         return FilterInvocation.class;
     }

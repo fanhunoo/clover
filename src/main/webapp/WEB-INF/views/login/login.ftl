@@ -9,17 +9,18 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="format-detection" content="telephone=no">
-        <link rel="stylesheet" href="./layui/css/layui.css" media="all" />
-        <link rel="stylesheet" href="./css/login/login.css" media="all" />
+        <link rel="icon" href="${(request.contextPath)!}/statics/icon/clover.png" type="image/x-icon">
+        <link rel="stylesheet" href="${(request.contextPath)!}/layui/css/layui.css" media="all" />
+        <link rel="stylesheet" href="${(request.contextPath)!}/css/login/login.css" media="all" />
     </head>
     <body>
         <video class="login-video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">
-            <source src="./statics/login/login.mp4" type="video/mp4">
+            <source src="${(request.contextPath)!}/statics/login/login.mp4" type="video/mp4">
         </video>
         <div class="login-video-mask" ></div>
         <div class="login">
             <h1>登录</h1>
-            <form class="layui-form" action="./login" method="post"><!-- action="/demo/login" method="post">-->
+            <form class="layui-form" action="${(request.contextPath)!}/login" method="post"><!-- action="/demo/login" method="post">-->
                 <input type="hidden"  name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <input type="hidden"  id="logoutMsg" value="${logoutMsg!}" />
                 <div class="layui-form-item">
@@ -38,7 +39,7 @@
                 </#if>
             </form>
         </div>
-        <script type="text/javascript" src="./layui/layui.js"></script>
-        <script type="text/javascript" src="./js/login/login.js"></script>
+        <script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
+        <script type="text/javascript" src="${(request.contextPath)!}/js/login/login.js"></script>
     </body>
 </html>

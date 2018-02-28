@@ -50,11 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// 设置不拦截规则
-		web.ignoring().antMatchers("/statics/**","/css/**","/layui/**","/js/**");
+		web.ignoring().antMatchers("/plugins/**","/statics/**","/css/**","/layui/**","/js/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().sameOrigin();//X-Frame-Options = SAMEORIGIN：frame页面的地址只能为同源域名下的页面
 		http.authorizeRequests()//该方法所返回的对象的方法来配置请求级别的安全细节
             .antMatchers("/","/login").permitAll()//对于登录路径不进行拦截
 			.anyRequest().authenticated()

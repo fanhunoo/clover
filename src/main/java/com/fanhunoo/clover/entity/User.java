@@ -23,6 +23,10 @@ public class User extends BaseEntity {
     //最后登陆时间
     private Date lastLoginTime;
 
+
+    //----------冗余-----------//
+    private String roleId;//角色
+
     public Integer getId() {
         return id;
     }
@@ -93,5 +97,13 @@ public class User extends BaseEntity {
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }

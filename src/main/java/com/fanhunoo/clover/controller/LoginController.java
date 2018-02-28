@@ -48,7 +48,6 @@ public class LoginController {
         if (logout != null) {
             logoutMsg = "您已经成功退出";
         }
-//        Authentication s = SecurityContextHolder.getContext().getAuthentication();
         request.setAttribute("errorMsg",errorMsg);
         request.setAttribute("logoutMsg",logoutMsg);
         return "login/login";

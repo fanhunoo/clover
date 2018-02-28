@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,10 +22,10 @@ import java.util.Set;
  * 即根据用户名查询上面t_resources表中的resKey 拼凑成”ROLE_XXX“ 这样形式的字符串所组成的list ，交给spirngSecurity。
  */
 public class MyUserDetailServiceImpl implements UserDetailsService {
-    @Autowired
+    @Resource
     private IUserService userService;
 
-    @Autowired
+    @Resource
     private IResourcesService resourcesService;
 
     @Override
@@ -33,16 +34,21 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         if(user ==null)
             throw new UsernameNotFoundException(username+" not exist!");
         Set<GrantedAuthority> authSet = new HashSet<>();
-        List<Resources> list = resourcesService.loadMenu(username);
+        List<Resources> list = resourcesService.loadMenu(username,null,null);
         for (Resources r : list) {
             authSet.add(new SimpleGrantedAuthority("ROLE_" +r.getKey()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(),
+        return new MyUserDetails(user.getUserName(),
                 user.getPassWord(),
                 user.getStatus() == 1,
                 true,
                 true,
                 true,
-                authSet);
+                authSet,
+                user.getRealName(),
+                user.getPhone(),
+                user.getOrgId(),
+                user.getLastLoginTime(),
+                user.getRoleId());
     }
 }

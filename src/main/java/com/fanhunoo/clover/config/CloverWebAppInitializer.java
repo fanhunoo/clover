@@ -30,6 +30,7 @@ public class CloverWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setLoadOnStartup(1);
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
         registration.setMultipartConfig(new MultipartConfigElement("/tmp/clover/uploads"));//配置Servlet 3.0对multipart的支持
     }
 
