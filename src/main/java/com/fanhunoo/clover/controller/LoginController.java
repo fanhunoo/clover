@@ -36,11 +36,9 @@ public class LoginController {
             Object exception = request.getSession().getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
             if(exception instanceof org.springframework.security.core.userdetails.UsernameNotFoundException){
                 errorMsg = "用户名或密码错误";
-            }
-            if(exception instanceof org.springframework.security.authentication.DisabledException){
+            }else if(exception instanceof org.springframework.security.authentication.DisabledException){
                 errorMsg = "用户未启用";
-            }
-            if(exception instanceof org.springframework.security.authentication.BadCredentialsException){
+            }else if(exception instanceof org.springframework.security.authentication.BadCredentialsException){
                 errorMsg = "用户名或密码错误";
             }
             logger.info("------:"+errorMsg);

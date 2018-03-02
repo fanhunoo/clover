@@ -15,7 +15,7 @@
     </head>
     <body>
         <video class="login-video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">
-            <source src="${(request.contextPath)!}/statics/login/login.mp4" type="video/mp4">
+            <source src="${(request.contextPath)!}/statics/video/login.mp4" type="video/mp4">
         </video>
         <div class="login-video-mask" ></div>
         <div class="login">
@@ -33,7 +33,7 @@
                     <!--<input class="layui-input" name="code" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">-->
                     <!--<div class="code"><img src="././images/code.jpg" width="116" height="36"></div>-->
                 <!--</div>-->
-                <button class="layui-btn login_btn" lay-submit />登录</button><!--lay-filter="login"-->
+                <button class="layui-btn login_btn" lay-submit >登录</button><!--lay-filter="login"-->
                 <#if errorMsg??>
                     <div style="height: 30px;width: 100%;"><span style="color: red;margin: auto auto">${errorMsg!}</span></div>
                 </#if>

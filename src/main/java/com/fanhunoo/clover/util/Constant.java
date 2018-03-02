@@ -25,4 +25,14 @@ public class Constant {
      * 老板角色
      */
     public static final String ROLE_BOSS = "boss";
+
+    /**
+     * 请求成功状态码
+     */
+    public static final String SUCCESS = "200";
+
+    /**
+     * 分页请求成功状态码
+     */
+    public static final String PAGE_SUCCESS = "0";
 }

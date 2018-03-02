@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fanhunoo.clover.dao.IUserDao">
+    <!-- 需查密码 用于security的权限校验-->
     <resultMap id="user" type="com.fanhunoo.clover.entity.User">
         <result property="id" column="ID"/>
         <result property="passWord" column="PASS_WORD"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="realName" column="REAL_NAME"/>
+        <result property="phone" column="PHONE"/>
+        <result property="status" column="STATUS"/>
+        <result property="orgId" column="ORG_ID"/>
+        <result property="remarkes" column="REMARKES"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="createPer" column="CREATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updatePer" column="UPDATE_PER"/>
+        <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+
+        <result property="roleId" column="ROLE_ID"/>
+    </resultMap>
+
+    <!-- 不展示密码 用于业务-->
+    <resultMap id="userNoPassword" type="com.fanhunoo.clover.entity.User">
+        <result property="id" column="ID"/>
         <result property="userName" column="USER_NAME"/>
         <result property="realName" column="REAL_NAME"/>
         <result property="phone" column="PHONE"/>
@@ -30,7 +49,7 @@
 		WHERE USER_NAME=#{username}
     </select>
 
-    <select id="findUsersBy" resultMap="user" parameterType="java.lang.Integer">
+    <select id="findUsersBy" resultMap="userNoPassword" parameterType="java.lang.Integer">
         SELECT U.*,'' AS ROLE_ID
         FROM T_SYS_USER U
         <where>

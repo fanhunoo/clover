@@ -1,6 +1,8 @@
 package com.fanhunoo.clover.config;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInterceptor;
+import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,6 +75,8 @@ public class DBConfig {
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setTypeAliasesPackage("com.fanhunoo.clover.entity");
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
+        Interceptor[] plugins =  new Interceptor[]{pageInterceptor()};//PageHelper分页插件配置
+        sessionFactory.setPlugins(plugins);
         return sessionFactory;
     }
 
@@ -85,17 +89,18 @@ public class DBConfig {
     }
 
     /**
-     * mybatis 分页插件配置
+     * mybatis PageHelper分页插件配置
      */
     @Bean
-    public PageHelper pageHelper() {
+    public PageInterceptor pageInterceptor() {
 //        logger.info("MyBatisConfiguration.pageHelper()");
-        PageHelper pageHelper = new PageHelper();
+        PageInterceptor pageInterceptor = new PageInterceptor();
         Properties p = new Properties();
-        p.setProperty("offsetAsPageNum", "true");
-        p.setProperty("rowBoundsWithCount", "true");
-        p.setProperty("reasonable", "true");
-        pageHelper.setProperties(p);
-        return pageHelper;
+//        p.setProperty("offsetAsPageNum", "true");//设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用
+//        p.setProperty("rowBoundsWithCount", "true");//设置为true时，使用RowBounds分页会进行count查询
+        p.setProperty("reasonable", "true");//启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页
+        p.setProperty("params", "pageNum=page;pageSize=limit;");//支持startPage(Object params)方法，用于从对象中根据属性名取值
+        pageInterceptor.setProperties(p);
+        return pageInterceptor;
     }
 }

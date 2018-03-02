@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.headers().frameOptions().sameOrigin();//X-Frame-Options = SAMEORIGIN：frame页面的地址只能为同源域名下的页面
+		http.headers().frameOptions().disable();//sameOrigin();//X-Frame-Options = SAMEORIGIN：frame页面的地址只能为同源域名下的页面
 		http.authorizeRequests()//该方法所返回的对象的方法来配置请求级别的安全细节
             .antMatchers("/","/login").permitAll()//对于登录路径不进行拦截
 			.anyRequest().authenticated()
@@ -70,10 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()//用户退出操作
             .logoutUrl("/logout")//用户退出所访问的路径，需要使用Post方式
             .permitAll()
-            .logoutSuccessUrl("/login/login?logout=true")
-            .and()
-            .authorizeRequests()
-			.anyRequest().permitAll()
+            .logoutSuccessUrl("/login?logout=true")
+//            .and()
+//            .authorizeRequests()
+//			.anyRequest().permitAll()
 //          .and()
 //          .rememberMe()//启用记住我功能
 //          .tokenValiditySeconds(2419200)

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>修改密码</title>
+    <title>用户管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,42 +13,40 @@
     <link rel="stylesheet" href="${(request.contextPath)!}/css/public.css" media="all"/>
 </head>
 <body>
-<table lay-even class="layui-table">
-    <colgroup>
-        <col width="150">
-        <col width="150">
-        <col width="200">
-        <col width="200">
-        <col width="80">
-        <col width="250">
-    </colgroup>
-    <thead>
-    <tr>
-        <th>用户名</th>
-        <th>真实姓名</th>
-        <th>手机号</th>
-        <th>所属机构</th>
-        <th>状态</th>
-        <th>备注</th>
-    </tr>
-    </thead>
-    <tbody>
-    <#list users as user>
-    <tr>
-        <td>${user.userName!}</td>
-        <td>${user.realName!}</td>
-        <td>${user.phone!}</td>
-        <td>
-            <#if user.orgId==0>总店<#else>${user.orgId!}号店</#if>
-        </td>
-        <td>
-            <#if user.status==0>禁用</#if>
-            <#if user.status==1>启用</#if>
-        </td>
-        <td>${user.remarkes!}</td>
-    </tr>
-    </#list>
-    </tbody>
-</table>
+<table id="user-list"></table>
 </body>
+<script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#user-list'
+            ,height: 315
+            ,url: '${(request.contextPath)!}/users/users/' //数据接口
+            ,limit:2
+            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
+            ,cols: [[ //表头
+                {field: 'userName', title: '用户名', fixed:'left'}
+                ,{field: 'realName', title: '真实姓名'}
+                ,{field: 'phone', title: '手机号'}
+                ,{field: 'orgId', title: '所属机构'
+                    ,templet: function(d){
+                        if(d.orgId === 0){
+                            return '总店';
+                        }else if(d.orgId === 1){
+                            return '1号店';
+                        }else if(d.orgId === 2){
+                            return '2号店';
+                        }else{
+                            return '-';
+                        }
+                    }
+                }
+                ,{field: 'status', title: '状态', templet: function(d){return d.status === 0?'启用':'禁用';}}
+                ,{field: 'remarkes', title: '备注'}
+            ]]
+        });
+    });
+</script>
 </html>

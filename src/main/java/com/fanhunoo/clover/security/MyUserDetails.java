@@ -19,10 +19,10 @@ public class MyUserDetails extends User {
     //角色id
     private String roleId;
 
-    public MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
-                         boolean credentialsNonExpired, boolean accountNonLocked,
-                         Collection<? extends GrantedAuthority> authorities
-                        ,String realName,Integer phone,Integer orgId,Date lastLoginTime,String roleId) {
+    MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
+                  boolean credentialsNonExpired, boolean accountNonLocked,
+                  Collection<? extends GrantedAuthority> authorities
+            , String realName, Integer phone, Integer orgId, Date lastLoginTime, String roleId) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.realName = realName;
         this.phone = phone;
