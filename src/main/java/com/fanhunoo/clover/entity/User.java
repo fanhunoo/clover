@@ -13,7 +13,7 @@ public class User extends BaseEntity {
     //真实姓名
     private String realName;
     //手机号
-    private Integer phone;
+    private String phone;
     //状态（1-启用;0-禁用）
     private Integer status;
     //所在店id(0-总;1-1号店)
@@ -59,11 +59,11 @@ public class User extends BaseEntity {
         this.realName = realName;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

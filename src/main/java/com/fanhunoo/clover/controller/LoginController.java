@@ -51,4 +51,13 @@ public class LoginController {
         return "login/login";
     }
 
+    /**
+     * 跳转登录弹窗
+     * @return
+     */
+    @GetMapping("/dialogLogin")
+    public String dialogLogin(){
+        return "login/login_dia";
+    }
+
 }

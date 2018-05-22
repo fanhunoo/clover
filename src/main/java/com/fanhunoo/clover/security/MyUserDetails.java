@@ -11,7 +11,7 @@ public class MyUserDetails extends User {
     //真实姓名
     private String realName;
     //手机号
-    private Integer phone;
+    private String phone;
     //所在店id(0-总;1-1号店)
     private Integer orgId;
     //最后登陆时间
@@ -22,7 +22,7 @@ public class MyUserDetails extends User {
     MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired,
                   boolean credentialsNonExpired, boolean accountNonLocked,
                   Collection<? extends GrantedAuthority> authorities
-            , String realName, Integer phone, Integer orgId, Date lastLoginTime, String roleId) {
+            , String realName, String phone, Integer orgId, Date lastLoginTime, String roleId) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.realName = realName;
         this.phone = phone;
@@ -39,11 +39,11 @@ public class MyUserDetails extends User {
         this.realName = realName;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

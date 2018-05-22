@@ -1,8 +1,6 @@
-package com.fanhunoo.clover.filter;
+package com.fanhunoo.clover.security;
 
-import com.fanhunoo.clover.security.MyAccessDecisionManager;
-import com.fanhunoo.clover.security.MySecurityMetadataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
@@ -63,7 +61,9 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
         try {
             fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
         } catch(Exception e) {
-            //log.error("【权限管理过滤器】【异常】" + e.getMessage(), e);
+           e.printStackTrace();
+            //没有权限
+            throw new AccessDeniedException(" 没有权限访问或未重新登录！ ");
         } finally {
             super.afterInvocation(token, null);
         }
@@ -80,5 +80,4 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
         //下面的MyAccessDecisionManager的supports方面必须放回true,否则会提醒类型错误
         return FilterInvocation.class;
     }
-
 }

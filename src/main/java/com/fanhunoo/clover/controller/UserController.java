@@ -4,8 +4,7 @@ import com.fanhunoo.clover.entity.User;
 import com.fanhunoo.clover.security.MyUserDetails;
 import com.fanhunoo.clover.service.IUserService;
 import com.fanhunoo.clover.util.Constant;
-import com.fanhunoo.clover.util.MyPage;
-import com.github.pagehelper.Page;
+import com.fanhunoo.clover.base.MyPage;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,16 +30,16 @@ public class UserController {
      */
     @GetMapping("/list")
     public String queryUsers(HttpServletRequest request, HttpServletResponse response) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String roleId = userDetails.getRoleId();
-        List<User> users;
-        //如果是超管或老板角色，则可查询所有角色，否则只能查询当前机构
-        if(StringUtils.equals(roleId, Constant.ROLE_SUPER_ADMIN) || StringUtils.equals(roleId, Constant.ROLE_BOSS)){
-            users = userService.findUsersBy(null);
-        }else {
-            users = userService.findUsersBy(userDetails.getOrgId());
-        }
-        request.setAttribute("users",users);
+//        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String roleId = userDetails.getRoleId();
+//        List<User> users;
+//        //如果是超管或老板角色，则可查询所有角色，否则只能查询当前机构
+//        if(StringUtils.equals(roleId, Constant.ROLE_SUPER_ADMIN) || StringUtils.equals(roleId, Constant.ROLE_BOSS)){
+//            users = userService.findUsersBy(null);
+//        }else {
+//            users = userService.findUsersBy(userDetails.getOrgId());
+//        }
+//        request.setAttribute("users",users);
         return "system/user/user";
     }
 

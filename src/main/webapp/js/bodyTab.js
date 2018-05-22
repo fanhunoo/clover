@@ -49,9 +49,9 @@ layui.define(["element","jquery"],function(exports){
                 ulHtml += '<dl class="layui-nav-child">';
                 for(var j=0;j<chirdData.length;j++){
                     if(chirdData[j].target == "_blank"){
-                        ulHtml += '<dd><a data-url="'+chirdData[j].url+'" target="'+chirdData[j].target+'">';
+                        ulHtml += '<dd><a data-url="'+'.'+chirdData[j].url+'" target="'+chirdData[j].target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="'+chirdData[j].url+'">';
+                        ulHtml += '<dd><a data-url="'+'.'+chirdData[j].url+'">';
                     }
                     if(chirdData[j].icon != undefined && chirdData[j].icon != ''){
                         if(chirdData[j].icon.indexOf("icon-") != -1){

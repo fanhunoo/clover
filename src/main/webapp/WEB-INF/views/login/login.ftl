@@ -21,7 +21,7 @@
         <div class="login">
             <h1>登录</h1>
             <form class="layui-form" action="${(request.contextPath)!}/login" method="post"><!-- action="/demo/login" method="post">-->
-                <input type="hidden"  name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <input type="hidden"  name="${(_csrf.parameterName)!}" value="${(_csrf.token)!}" />
                 <input type="hidden"  id="logoutMsg" value="${logoutMsg!}" />
                 <div class="layui-form-item">
                     <input class="layui-input" name="username" placeholder="用户名" lay-verify="required" type="text" autocomplete="off">

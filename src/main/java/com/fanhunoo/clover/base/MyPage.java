@@ -1,5 +1,6 @@
-package com.fanhunoo.clover.util;
+package com.fanhunoo.clover.base;
 
+import com.fanhunoo.clover.util.Constant;
 import com.github.pagehelper.Page;
 
 import java.util.List;

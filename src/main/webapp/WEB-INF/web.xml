@@ -12,6 +12,11 @@
     <!--<param-value>classpath:spring.xml</param-value>-->
   <!--</context-param>-->
 
+  <!-- 防止spring内存溢出监听器 -->
+  <!--<listener>-->
+  <!--<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>-->
+  <!--</listener>-->
+
   <!-- 编码过滤器 -->
   <!--<filter>-->
     <!--<filter-name>encodingFilter</filter-name>-->
@@ -36,6 +41,7 @@
     <!--<url-pattern>/*</url-pattern>-->
   <!--</filter-mapping>-->
 
+  <!--对站点的URL进行统计-->
   <filter>
     <filter-name>DruidWebStatFilter</filter-name>
     <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
@@ -49,6 +55,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!--监控数据库访问性能-->
   <servlet>
     <servlet-name>DruidStatView</servlet-name>
     <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
@@ -62,10 +69,7 @@
     <!--<description>spring监听器</description>-->
     <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
   <!--</listener>-->
-  <!-- 防止spring内存溢出监听器 -->
-  <listener>
-    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-  </listener>
+
   <!-- 配置DispatcherServlet -->
   <!--<servlet>-->
     <!--<servlet-name>SpringMVC</servlet-name>-->

@@ -1,14 +1,5 @@
 package com.fanhunoo.clover.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
 import com.fanhunoo.clover.dao.IResourcesDao;
 import com.fanhunoo.clover.entity.Resources;
 import org.springframework.security.access.ConfigAttribute;
@@ -17,7 +8,12 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.*;
+
 /**
+ * 安全源数据源
  * 权限配置资源管理器
  * 加载资源与权限的对应关系
  */
@@ -27,6 +23,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     @Resource
     private IResourcesDao resourcesDao;
 
+    //todo: 更新权限和资源表时要刷新此map
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
 
     public Collection<ConfigAttribute> getAllConfigAttributes() {
@@ -48,16 +45,20 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
             resourceMap = new HashMap<>();
             List<Resources> list = resourcesDao.queryAll();
             for (Resources resources : list) {
+                //用Collection就是为了应对单个请求需要多个权限的情况
                 Collection<ConfigAttribute> configAttributes = new ArrayList<>();
-                // 通过资源名称来表示具体的权限 注意：必须"ROLE_"开头
-                ConfigAttribute configAttribute = new SecurityConfig("ROLE_" + resources.getKey());
+                //本系统业务上单个请求就对应单个权限，所以直接用资源id来表示具体的权限,注意：必须"ROLE_"开头
+                ConfigAttribute configAttribute = new SecurityConfig("ROLE_" + resources.getId());
                 configAttributes.add(configAttribute);
                 resourceMap.put(resources.getUrl(), configAttributes);
             }
         }
     }
+
     //返回所请求资源所需要的权限
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
+        String ajaxFlag = ((FilterInvocation) object).getHttpRequest().getHeader("X-Requested-With");
+        //return ajaxFlag != null && "XMLHttpRequest".equals(ajaxFlag);
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         if(resourceMap == null) {
             loadResourceDefine();
@@ -67,6 +68,5 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         }
         return resourceMap.get(requestUrl);
     }
-
 
 }

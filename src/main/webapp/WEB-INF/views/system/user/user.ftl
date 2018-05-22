@@ -22,15 +22,15 @@
         //第一个实例
         table.render({
             elem: '#user-list'
-            ,height: 315
+//            ,height: 'full'
             ,url: '${(request.contextPath)!}/users/users/' //数据接口
-            ,limit:2
+//            ,limit:2
             ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
             ,cols: [[ //表头
-                {field: 'userName', title: '用户名', fixed:'left'}
-                ,{field: 'realName', title: '真实姓名'}
-                ,{field: 'phone', title: '手机号'}
-                ,{field: 'orgId', title: '所属机构'
+                {field: 'userName', title: '用户名', fixed:'left',align:'center'}
+                ,{field: 'realName', title: '真实姓名',align:'center'}
+                ,{field: 'phone', title: '手机号',align:'center'}
+                ,{field: 'orgId', title: '所属机构',align:'center'
                     ,templet: function(d){
                         if(d.orgId === 0){
                             return '总店';
@@ -43,10 +43,12 @@
                         }
                     }
                 }
-                ,{field: 'status', title: '状态', templet: function(d){return d.status === 0?'启用':'禁用';}}
-                ,{field: 'remarkes', title: '备注'}
+                ,{field: 'status', title: '状态',align:'center', templet: function(d){return d.status === 1?'启用':'禁用';}}
+                ,{field: 'remarkes', title: '备注',align:'center'}
             ]]
         });
     });
+
+
 </script>
 </html>

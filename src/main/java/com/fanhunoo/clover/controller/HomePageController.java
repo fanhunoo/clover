@@ -68,4 +68,13 @@ public class HomePageController {
         }
         return CommonUtils.objectToJson(secendMenus);
     }
+
+
+    /**
+     * 跳转到工作首页
+     */
+    @GetMapping("/main")
+    public String mainPage(HttpServletRequest request){
+        return "system/home/main";
+    }
 }

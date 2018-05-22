@@ -1,4 +1,4 @@
-package com.fanhunoo.clover.util;
+package com.fanhunoo.clover.base;
 
 import java.util.Map;
 

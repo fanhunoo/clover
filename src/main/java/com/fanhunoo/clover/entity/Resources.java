@@ -3,6 +3,8 @@ package com.fanhunoo.clover.entity;
 import com.fanhunoo.clover.base.BaseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Date;
+
 /**
  * 系统资源表-实体类
  */
@@ -24,7 +26,7 @@ public class Resources extends BaseEntity {
      */
     private String remarkes;
     /**
-     * 资源类型（1-菜单;2-按钮）
+     * 资源类型（1-菜单;2-按钮;3-url）
      */
     private Integer type;
     /**
@@ -35,10 +37,6 @@ public class Resources extends BaseEntity {
      * 排序
      */
     private Integer sort;
-    /**
-     * 资源key
-     */
-    private String key;
     /**
      * 图标
      */
@@ -114,14 +112,6 @@ public class Resources extends BaseEntity {
         this.sort = sort;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -132,7 +122,9 @@ public class Resources extends BaseEntity {
 
     public static void main(String[] args) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encode = encoder.encode("df");
+        String encode = encoder.encode("123456");
         System.out.println("-------------------------"+encode);
+        System.out.println(new Date().getTime());
+
     }
 }

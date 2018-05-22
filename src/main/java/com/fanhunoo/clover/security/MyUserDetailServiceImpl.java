@@ -34,9 +34,10 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         if(user ==null)
             throw new UsernameNotFoundException(username+" not exist!");
         Set<GrantedAuthority> authSet = new HashSet<>();
+        //加载登录的用户所拥有的所有权限，放到Set<GrantedAuthority>中
         List<Resources> list = resourcesService.loadMenu(username,null,null);
         for (Resources r : list) {
-            authSet.add(new SimpleGrantedAuthority("ROLE_" +r.getKey()));
+            authSet.add(new SimpleGrantedAuthority("ROLE_" +r.getId()));
         }
         return new MyUserDetails(user.getUserName(),
                 user.getPassWord(),

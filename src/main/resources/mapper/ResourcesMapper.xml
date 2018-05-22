@@ -6,7 +6,6 @@
         <result property="createTime" column="CREATE_TIME"/>
         <result property="icon" column="ICON"/>
         <result property="id" column="ID"/>
-        <result property="key" column="KEY"/>
         <result property="name" column="NAME"/>
         <result property="parentId" column="PARENT_ID"/>
         <result property="remarkes" column="REMARKES"/>
