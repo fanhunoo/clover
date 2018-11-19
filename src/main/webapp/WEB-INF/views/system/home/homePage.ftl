@@ -126,7 +126,12 @@
 <div class="site-tree-mobile"><i class="layui-icon">&#xe602;</i></div>
 <div class="site-mobile-shade"></div>
 
-<script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
+<!-- public  start-->
+<script type="text/javascript" src="${(request.contextPath)!}/layui/layui.all.js"></script>
+<script type="text/javascript" src="${(request.contextPath)!}/js/common/public.js"></script>
+<script type="text/javascript" src="${(request.contextPath)!}/js/common/util.js"></script>
+<!-- public  end-->
+
 <script type="text/javascript" src="${(request.contextPath)!}/js/index.js"></script>
 <#--<script type="text/javascript" src="${(request.contextPath)!}js/cache.js"></script>-->
 </body>

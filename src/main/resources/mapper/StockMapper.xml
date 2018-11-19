@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanhunoo.clover.dao.IStockDao">
+    <resultMap id="storageLog" type="com.fanhunoo.clover.entity.StorageLog">
+        <result property="beforeStorageBatchId" column="BEFORE_STORAGE_BATCH_ID"/>
+        <result property="code" column="CODE"/>
+        <result property="id" column="ID"/>
+        <result property="operateTime" column="OPERATE_TIME"/>
+        <result property="operator" column="OPERATOR"/>
+        <result property="quantity" column="QUANTITY"/>
+        <result property="resourceCode" column="RESOURCE_CODE"/>
+        <result property="resourceName" column="RESOURCE_NAME"/>
+        <result property="salePrice" column="SALE_PRICE"/>
+        <result property="siteCode" column="SITE_CODE"/>
+        <result property="siteName" column="SITE_NAME"/>
+        <result property="storageBatchId" column="STORAGE_BATCH_ID"/>
+        <result property="updatePer" column="UPDATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+
+    <!--获取类型编码序列-->
+    <select id="getStockTypeSeq" resultType="int">
+        SELECT seq_stock_type.nextval FROM dual
+    </select>
+
+    <!--根据名称编码物理删除库存信息-->
+    <delete id="deleteStorageLog" parameterType="java.lang.String">
+        DELETE T_STORAGE_LOG WHERE CODE = #{nameCode}
+    </delete>
+
+    <!--根据名称编码物理删除库存信息-->
+    <delete id="deleteCommodityDetail" parameterType="java.lang.String">
+        DELETE T_COMMODITY_DETAIL WHERE CODE = #{nameCode}
+    </delete>
+
+    <!--插入入库记录表-->
+    <insert id="saveStorageLog" parameterType="com.fanhunoo.clover.entity.vo.StockVo">
+        <selectKey keyProperty="id" order="BEFORE" resultType="string">
+            SELECT SEQ_STORAGE_LOG.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_STORAGE_LOG(
+        ID,
+        STORAGE_BATCH_ID,
+        CODE,
+        QUANTITY,
+        OPERATOR,
+        OPERATE_TIME,
+        SALE_PRICE,
+        RESOURCE_CODE,
+        RESOURCE_NAME,
+        SITE_CODE,
+        SITE_NAME,
+        UPDATE_TIME,
+        UPDATE_PER)
+        VALUES (
+        #{id,jdbcType=VARCHAR},
+        #{stockBatchId,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},
+        #{jianshu,jdbcType=INTEGER},
+        #{operator,jdbcType=VARCHAR},
+        sysdate,
+        #{salePrice,jdbcType=DECIMAL},
+        #{resource,jdbcType=VARCHAR},
+        #{resource,jdbcType=VARCHAR},
+        #{storage,jdbcType=VARCHAR},
+        #{storage,jdbcType=VARCHAR},
+        sysdate,
+        #{operator,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="saveCommodityDetail" parameterType="com.fanhunoo.clover.entity.CommodityDetail">
+        <selectKey keyProperty="id" order="BEFORE" resultType="string">
+            SELECT SEQ_COMMODITY_DETAIL.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_COMMODITY_DETAIL(ID,NAME,CODE,SALE_PRICE,SEASON,SIZE_TYPE,SEX,STATUS,RESOURCE_CODE,RESOURCE_NAME,STORAGE_TIME,STORAGE_PER,STORAGE_BATCH_ID,SORT_ID,SITE_CODE,SITE_NAME,REMAKE,UPDATE_TIME,UPDATE_PER,PURCHASE_PRICE,IMAGE,BEFORE_CODE)
+        VALUES (#{id},#{name},#{code},#{salePrice},#{season},#{sizeType},#{sex},#{status},#{resourceCode},#{resourceName},#{storageTime},#{storagePer},#{storageBatchId},#{sortId},#{siteCode},#{siteName},#{remake},#{updateTime},#{updatePer},#{purchasePrice},#{image},#{beforeCode})
+    </insert>
+
+
+
+    <insert id="saveCommodityDetailList" parameterType="java.util.List">
+        INSERT INTO T_COMMODITY_DETAIL(
+        ID,
+        NAME,
+        CODE,
+        SALE_PRICE,
+        SEASON,
+        SIZE_TYPE,
+        SEX,
+        STATUS,
+        RESOURCE_CODE,
+        RESOURCE_NAME,
+        STORAGE_TIME,
+        STORAGE_PER,
+        STORAGE_BATCH_ID,
+        SORT_ID,
+        SITE_CODE,
+        SITE_NAME,
+        REMAKE,
+        UPDATE_TIME,
+        UPDATE_PER,
+        PURCHASE_PRICE,
+        IMAGE,
+        BEFORE_CODE
+        )
+        select SEQ_COMMODITY_DETAIL.NEXTVAL,A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.name,jdbcType=VARCHAR},
+            #{item.code,jdbcType=VARCHAR},
+            #{item.salePrice,jdbcType=DECIMAL},
+            #{item.season,jdbcType=VARCHAR},
+            #{item.sizeType,jdbcType=VARCHAR},
+            #{item.sex,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER},
+            #{item.resourceCode,jdbcType=VARCHAR},
+            #{item.resourceName,jdbcType=VARCHAR},
+            #{item.storageTime,jdbcType=TIMESTAMP },
+            #{item.storagePer,jdbcType=VARCHAR},
+            #{item.storageBatchId,jdbcType=VARCHAR},
+            #{item.sortId,jdbcType=INTEGER},
+            #{item.siteCode,jdbcType=VARCHAR},
+            #{item.siteName,jdbcType=VARCHAR},
+            #{item.remake,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP },
+            #{item.updatePer,jdbcType=VARCHAR},
+            #{item.purchasePrice,jdbcType=VARCHAR},
+            #{item.image,jdbcType=VARCHAR},
+            #{item.beforeCode,jdbcType=VARCHAR}
+            FROM dual
+        </foreach>
+        ) A
+    </insert>
+
+
+</mapper>

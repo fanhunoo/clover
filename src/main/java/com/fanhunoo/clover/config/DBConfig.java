@@ -73,7 +73,7 @@ public class DBConfig {
     public SqlSessionFactoryBean sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setTypeAliasesPackage("com.fanhunoo.clover.entity");
+        sessionFactory.setTypeAliasesPackage("com.fanhunoo.clover.entity");//?
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
         Interceptor[] plugins =  new Interceptor[]{pageInterceptor()};//PageHelper分页插件配置
         sessionFactory.setPlugins(plugins);

@@ -20,7 +20,7 @@ layui.define(["element","jquery"],function(exports){
     //生成左侧菜单
     Tab.prototype.navBar = function(strData){
         var data;
-        if(typeof(strData) == "string"){
+        if(typeof(strData) === "string"){
             data = JSON.parse(strData); //部分用户解析出来的是字符串，转换一下
         }else{
             data = strData;
@@ -393,10 +393,10 @@ layui.define(["element","jquery"],function(exports){
 		}
 		//渲染顶部窗口
 		tab.tabMove();
-	})
+	});
 
 	var bodyTab = new Tab();
 	exports("bodyTab",function(option){
 		return bodyTab.set(option);
 	});
-})
+});

@@ -20,6 +20,8 @@
 		<jackson.version>2.9.0</jackson.version>
 		<!-- swagger版本号 -->
 		<swagger.version>2.7.0</swagger.version>
+		<!--lombok版本号-->
+		<lombok.version>1.18.2</lombok.version>
 		<security.version>4.2.2.RELEASE</security.version>
 	</properties>
 
@@ -97,6 +99,12 @@
 			<version>5.1.2</version>
 		</dependency>
 
+		<!-- 配置mybatis支持localDateTime -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-typehandlers-jsr310</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 
 		<!-- mybatis/spring整合包 -->
 		<dependency>
@@ -256,6 +264,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

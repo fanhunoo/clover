@@ -34,13 +34,13 @@ layui.use(['layer','form'],function(){
             type:"POST",
             //contentType:'application/json;charset=UTF-8',
             success:function(result){
-                if("200"==result.statusCode){
+                if("200"===result.statusCode){
                     window.location.href = "../home";
 				}else {
                     layer.msg(result.message);
 				}
                 layer.close(load);
-                if(result && result.status != "200"){
+                if(result && result.status !== "200"){
                     layer.msg(result.message,function(){});
                     $(".password").val("");
                 }else{

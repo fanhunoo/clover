@@ -48,14 +48,6 @@ public class Resources extends BaseEntity {
      */
     private String chirdJson;
 
-    public String getChirdJson() {
-        return chirdJson;
-    }
-
-    public void setChirdJson(String chirdJson) {
-        this.chirdJson = chirdJson;
-    }
-
     public String getId() {
         return id;
     }
@@ -118,6 +110,14 @@ public class Resources extends BaseEntity {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getChirdJson() {
+        return chirdJson;
+    }
+
+    public void setChirdJson(String chirdJson) {
+        this.chirdJson = chirdJson;
     }
 
     public static void main(String[] args) {

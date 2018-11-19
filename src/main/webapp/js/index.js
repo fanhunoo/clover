@@ -3,7 +3,7 @@ layui.config({
 	base : "js/"
 }).extend({
 	"bodyTab" : "bodyTab"
-})
+});
 layui.use(['bodyTab','form','element','layer','jquery'],function(){
 	var form = layui.form,
 		element = layui.element;
@@ -120,7 +120,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 		window.sessionStorage.removeItem("menu");
 		window.sessionStorage.removeItem("curmenu");
 	}
-})
+});
 
 //打开新窗口
 function addTab(_this){

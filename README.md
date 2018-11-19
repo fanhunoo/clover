@@ -11,3 +11,9 @@
 
 ##未得到某菜单权限的用户直接请求该菜单下的某些页面请求、ajxa请求--如何处理
 ####未登录也可访问的页面
+####jasypt对配置文件加密
+
+##1.封装ajax当session失效统一返回弹窗
+##2.不使用layui的table加载组件，自己使用freemaker和layui的page组件
+##3.util.js--公用方法&日志；constant.js常量
+##4.js模块化，layui直接用all，任何js模块需要用到其他js模块，在文件顶部声明下，类似java的import
