@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanhunoo.clover.dao.UserDao">
+    <resultMap id="dictionary" type="com.fanhunoo.clover.entity.Dictionary">
+        <result property="code" column="CODE"/>
+        <result property="id" column="ID"/>
+        <result property="sort" column="SORT"/>
+        <result property="status" column="STATUS"/>
+        <result property="titleCode" column="TITLE_CODE"/>
+        <result property="titleValue" column="TITLE_VALUE"/>
+        <result property="value" column="VALUE"/>
+    </resultMap>
+
+   <select id="findAllRole" resultMap="dictionary">
+        SELECT * FROM T_SYS_DICTIONARY WHERE TITLE_CODE = 'role'
+   </select>
+
+
+</mapper>

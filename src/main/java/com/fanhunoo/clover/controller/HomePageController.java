@@ -2,12 +2,11 @@ package com.fanhunoo.clover.controller;
 
 import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.security.MyUserDetails;
-import com.fanhunoo.clover.service.IResourcesService;
+import com.fanhunoo.clover.service.ResourcesService;
 import com.fanhunoo.clover.util.CommonUtils;
 import com.fanhunoo.clover.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ import java.util.List;
 public class HomePageController {
 
     @Autowired
-    private IResourcesService resourcesService;
+    private ResourcesService resourcesService;
 
     /**
      * 跳转到首页

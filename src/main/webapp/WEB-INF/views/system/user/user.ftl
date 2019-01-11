@@ -23,7 +23,7 @@
         table.render({
             elem: '#user-list'
 //            ,height: 'full'
-            ,url: '${(request.contextPath)!}/users/users/' //数据接口
+            ,url: '${(request.contextPath)!}/system/user/list' //数据接口
 //            ,limit:2
             ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
             ,cols: [[ //表头

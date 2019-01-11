@@ -1,8 +1,8 @@
-package com.fanhunoo.clover.controller;
+package com.fanhunoo.clover.controller.system;
 
 import com.fanhunoo.clover.entity.User;
 import com.fanhunoo.clover.security.MyUserDetails;
-import com.fanhunoo.clover.service.IUserService;
+import com.fanhunoo.clover.service.UserService;
 import com.fanhunoo.clover.util.Constant;
 import com.fanhunoo.clover.base.MyPage;
 import com.github.pagehelper.PageHelper;
@@ -18,18 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * 系统管理--用户管理
+ */
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/system/user")
 public class UserController {
 
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     /**
-     * 用户列表
+     * 页面
      */
-    @GetMapping("/list")
-    public String queryUsers(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/")
+    public String user(HttpServletRequest request, HttpServletResponse response) {
 //        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        String roleId = userDetails.getRoleId();
 //        List<User> users;
@@ -44,20 +47,20 @@ public class UserController {
     }
 
     /**
-     * 用户列表-jiekou
+     * 用户列表
      */
     @ResponseBody
-    @GetMapping("/users")
-    public MyPage queryUsersInterFace(HttpServletRequest request) {
+    @GetMapping("/list")
+    public MyPage list(HttpServletRequest request) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String roleId = userDetails.getRoleId();
         PageHelper.startPage(request);
         List<User> users;
         //如果是超管或老板角色，则可查询所有角色，否则只能查询当前机构
         if(StringUtils.equals(roleId, Constant.ROLE_SUPER_ADMIN) || StringUtils.equals(roleId, Constant.ROLE_BOSS)){
-            users = userService.findUsersBy(null);
+            users = userService.findUsersBy("selectAll",null);
         }else {
-            users = userService.findUsersBy(userDetails.getOrgId());
+            users = userService.findUsersBy(null,userDetails.getOrgId());
         }
         return new MyPage(users);
     }

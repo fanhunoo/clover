@@ -40,13 +40,14 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
             String needPermission = configAttribute.getAttribute();
             //用户所拥有的权限authentication
             for (GrantedAuthority ga : authentication.getAuthorities()) {
+                //TODO:层级url，不需要完全相等，或者截取下请求
                 if (StringUtils.equals(needPermission,ga.getAuthority())) {
                     return;
                 }
             }
         }
         //没有权限
-        throw new AccessDeniedException(" 没有权限访问或未重新登录！ ");
+        throw new AccessDeniedException(" 没有权限访问！ ");
     }
 
     @Override

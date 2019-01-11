@@ -1,19 +1,20 @@
 package com.fanhunoo.clover.service.impl;
 
-import com.fanhunoo.clover.dao.IRoleDao;
-import com.fanhunoo.clover.service.IRoleService;
+import com.fanhunoo.clover.dao.DictionaryDao;
+import com.fanhunoo.clover.entity.Dictionary;
+import com.fanhunoo.clover.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
-public class RoleServiceImpl implements IRoleService {
+public class RoleServiceImpl implements RoleService {
     @Autowired
-    private IRoleDao roleDao;
+    private DictionaryDao dictionaryDao;
 
     @Override
-    public Set<String> findRoleByUserId(Integer userId) {
-        return roleDao.findRoleByUserId(userId);
+    public List<Dictionary> findAllRole() {
+        return dictionaryDao.findAllRole();
     }
 }

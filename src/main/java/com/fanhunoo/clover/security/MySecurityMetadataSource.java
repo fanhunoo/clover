@@ -1,6 +1,6 @@
 package com.fanhunoo.clover.security;
 
-import com.fanhunoo.clover.dao.IResourcesDao;
+import com.fanhunoo.clover.dao.ResourcesDao;
 import com.fanhunoo.clover.entity.Resources;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -21,15 +21,17 @@ import java.util.*;
 public class MySecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     @Resource
-    private IResourcesDao resourcesDao;
+    private ResourcesDao resourcesDao;
 
     //todo: 更新权限和资源表时要刷新此map
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
 
+    @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         return null;
     }
 
+    @Override
     public boolean supports(Class<?> clazz) {
         return true;
     }
@@ -56,6 +58,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     }
 
     //返回所请求资源所需要的权限
+    @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         String ajaxFlag = ((FilterInvocation) object).getHttpRequest().getHeader("X-Requested-With");
         //return ajaxFlag != null && "XMLHttpRequest".equals(ajaxFlag);
@@ -66,7 +69,18 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         if(requestUrl.contains("?")){
             requestUrl = requestUrl.substring(0,requestUrl.indexOf("?"));
         }
-        return resourceMap.get(requestUrl);
+        int index1 = requestUrl.indexOf("/",1);
+        //只有1个'/'表示是1级或2级菜单
+        if(index1<0){
+            return resourceMap.get(requestUrl);
+        }
+        int index2 = requestUrl.indexOf("/",index1+1);
+        //只有2个'/'表示是3级菜单
+        if(index2<0){
+            return resourceMap.get(requestUrl);
+        }
+        //有超过2个'/'表示是页面里的url或按钮，需先判断有没有配置对应权限，如果没有则取对应3级菜单的权限
+        return null==resourceMap.get(requestUrl)?
+                resourceMap.get(requestUrl.substring(0,index2)) : resourceMap.get(requestUrl);
     }
-
 }

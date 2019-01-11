@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fanhunoo.clover.dao.IStockDao">
+<mapper namespace="com.fanhunoo.clover.dao.StockDao">
     <resultMap id="storageLog" type="com.fanhunoo.clover.entity.StorageLog">
         <result property="beforeStorageBatchId" column="BEFORE_STORAGE_BATCH_ID"/>
         <result property="code" column="CODE"/>

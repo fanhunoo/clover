@@ -17,6 +17,8 @@ public class CommonUtils {
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
 
+
+
     public static String objectToJson(Object object){
         if(object==null){
             return null;

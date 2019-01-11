@@ -2,13 +2,19 @@ package com.fanhunoo.clover.base;
 
 import com.fanhunoo.clover.util.Constant;
 import com.github.pagehelper.Page;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * 分页返回数据格式
  * (使用layui分页默认的返回格式)
  */
+@Getter
+@Setter
 public class MyPage {
     private String code;//返回状态码
     private String msg;//返回信息
@@ -26,38 +32,6 @@ public class MyPage {
         this.code = code;
         this.msg = msg;
         this.count = count;
-        this.data = data;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
-
-    public List<?> getData() {
-        return data;
-    }
-
-    public void setData(List<?> data) {
         this.data = data;
     }
 }

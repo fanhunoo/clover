@@ -22,7 +22,7 @@ import java.io.IOException;
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 //    @Autowired
-//    private IUserService userService;
+//    private UserService userService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,

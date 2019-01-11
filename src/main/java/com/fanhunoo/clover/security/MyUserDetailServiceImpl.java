@@ -2,9 +2,8 @@ package com.fanhunoo.clover.security;
 
 import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.entity.User;
-import com.fanhunoo.clover.service.IResourcesService;
-import com.fanhunoo.clover.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fanhunoo.clover.service.ResourcesService;
+import com.fanhunoo.clover.service.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,10 +22,10 @@ import java.util.Set;
  */
 public class MyUserDetailServiceImpl implements UserDetailsService {
     @Resource
-    private IUserService userService;
+    private UserService userService;
 
     @Resource
-    private IResourcesService resourcesService;
+    private ResourcesService resourcesService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

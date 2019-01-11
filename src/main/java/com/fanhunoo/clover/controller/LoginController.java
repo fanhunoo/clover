@@ -1,6 +1,6 @@
 package com.fanhunoo.clover.controller;
 
-import com.fanhunoo.clover.service.IUserService;
+import com.fanhunoo.clover.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class LoginController {
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);//日志
 
     @Autowired
-    IUserService userService;
+    UserService userService;
 
 
     /**

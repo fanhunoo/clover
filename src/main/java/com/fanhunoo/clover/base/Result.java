@@ -1,39 +1,28 @@
 package com.fanhunoo.clover.base;
 
-import java.util.Map;
+import com.fanhunoo.clover.util.Constant;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Result {
     private String statusCode;
     private String message;
-    private Map<String,Object> data;
+    private Object data;
 
-    public Result(String statusCode,String message,Map<String,Object> data){
-        this.statusCode = statusCode;
-        this.message = message;
+    public Result(){
+    }
+
+    public Result(Object data){
+        this.statusCode = Constant.SUCCESS;
+        this.message = "请求成功！";
         this.data = data;
     }
 
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
+    public Result(String statusCode,String message,Object data){
         this.statusCode = statusCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 }

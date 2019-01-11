@@ -1,25 +1,26 @@
 package com.fanhunoo.clover.service.impl;
 
-import com.fanhunoo.clover.dao.IStockDao;
+import com.fanhunoo.clover.dao.StockDao;
 import com.fanhunoo.clover.entity.CommodityDetail;
 import com.fanhunoo.clover.entity.vo.StockVo;
-import com.fanhunoo.clover.service.IStockService;
-import com.fanhunoo.clover.util.CommonUtils;
+import com.fanhunoo.clover.service.StockService;
 import com.fanhunoo.clover.util.Constant;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
 @Service
-public class StockServiceImpl implements IStockService {
+public class StockServiceImpl implements StockService {
     @Autowired
-    private IStockDao stockDao;
+    private StockDao stockDao;
 
 
     @Override
@@ -33,8 +34,15 @@ public class StockServiceImpl implements IStockService {
         stockDao.deleteCommodityDetail(nameCode);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void saveStock(StockVo stockVo) throws Exception {
+        String beforeCode = stockVo.getBeforeCode();
+        /*如果有beforecode，表示是编辑过后的入库，先删除之前的code*/
+        if(StringUtils.isNotEmpty(beforeCode)){
+            beforeCode = beforeCode.substring(1,beforeCode.length()-7);
+            this.deleteStock(beforeCode);
+        }
         stockDao.saveStorageLog(stockVo);
         stockDao.saveCommodityDetailList(this.makeCommodityDetails(stockVo));
     }
@@ -62,7 +70,7 @@ public class StockServiceImpl implements IStockService {
             commodityDetail.setStatus(Constant.COMMODITY_STATUS_STORAGED);
             commodityDetail.setResourceCode(stockVo.getResource());
             commodityDetail.setResourceName(stockVo.getResource());//todo
-            commodityDetail.setStorageTime(new Date());
+            commodityDetail.setStorageTime(LocalDateTime.now());
             commodityDetail.setStoragePer(stockVo.getOperator());
             commodityDetail.setSortId(i);
             commodityDetail.setSiteCode(stockVo.getStorage());

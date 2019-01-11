@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IStockDao {
+public interface StockDao {
     int getStockTypeSeq() throws Exception;
 
     void deleteStorageLog(String nameCode) throws Exception;

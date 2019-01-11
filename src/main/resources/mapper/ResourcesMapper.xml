@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fanhunoo.clover.dao.IResourcesDao">
+<mapper namespace="com.fanhunoo.clover.dao.ResourcesDao">
     <resultMap id="resources" type="com.fanhunoo.clover.entity.Resources">
         <result property="createPer" column="CREATE_PER"/>
         <result property="createTime" column="CREATE_TIME"/>
@@ -33,5 +33,60 @@
         </if>
         order by sort
     </select>
+
+    <select id="queryByCondition" resultMap="resources" parameterType="java.util.Map">
+        SELECT RE.*
+        FROM T_SYS_RESOURCES RE
+        <where>
+            <if test='type!=null'>
+                AND re.type = #{type}
+            </if>
+            <if test='parentId!=null and parentId!=""'>
+                and re.parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveResource" parameterType="com.fanhunoo.clover.entity.Resources">
+        INSERT INTO T_SYS_RESOURCES(ID,NAME,URL,TYPE,PARENT_ID,SORT,REMARKES,CREATE_TIME,CREATE_PER,UPDATE_TIME,UPDATE_PER,ICON)
+        VALUES (sys_guid(),#{name,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+        #{parentId,jdbcType=VARCHAR},#{sort,jdbcType=VARCHAR},#{remarkes,jdbcType=VARCHAR},
+        sysdate,#{createPer,jdbcType=VARCHAR},sysdate,#{updatePer,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.fanhunoo.clover.entity.Resources">
+        UPDATE T_SYS_RESOURCES
+        <set>
+            <if test="id!= null and id != ''">ID = #{id}</if>
+            <if test="name!= null and name != ''">NAME = #{name}</if>
+            <if test="url!= null and url != ''">URL = #{url}</if>
+            <if test="type!= null and type != ''">TYPE = #{type}</if>
+            <if test="parentId!= null and parentId != ''">PARENT_ID = #{parentId}</if>
+            <if test="sort!= null and sort != ''">SORT = #{sort}</if>
+            <if test="remarkes!= null and remarkes != ''">REMARKES = #{remarkes}</if>
+            <if test="createTime!= null and createTime != ''">CREATE_TIME = #{createTime}</if>
+            <if test="createPer!= null and createPer != ''">CREATE_PER = #{createPer}</if>
+            <if test="updateTime!= null and updateTime != ''">UPDATE_TIME = sysdate</if>
+            <if test="updatePer!= null and updatePer != ''">UPDATE_PER = #{updatePer}</if>
+            <if test="icon!= null and icon != ''">ICON = #{icon}</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteResource" parameterType="java.lang.String" >
+        DELETE T_SYS_RESOURCES WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteResourceContainChild" parameterType="java.lang.String" >
+        DELETE T_SYS_RESOURCES WHERE ID in (
+            SELECT ID FROM T_SYS_RESOURCES CONNECT BY PRIOR ID = PARENT_ID START WITH ID = #{id})
+    </delete>
+
+
+    <delete id="deletePermissionByResourceId" parameterType="java.lang.String" >
+        DELETE T_SYS_PERMISSION WHERE RESOURCES_ID = #{id}
+    </delete>
+
+
 
 </mapper>

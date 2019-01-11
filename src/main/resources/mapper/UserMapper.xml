@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fanhunoo.clover.dao.IUserDao">
+<mapper namespace="com.fanhunoo.clover.dao.UserDao">
     <!-- 需查密码 用于security的权限校验-->
     <resultMap id="user" type="com.fanhunoo.clover.entity.User">
         <result property="id" column="ID"/>
@@ -49,11 +49,11 @@
 		WHERE USER_NAME=#{username}
     </select>
 
-    <select id="findUsersBy" resultMap="userNoPassword" parameterType="java.lang.Integer">
+    <select id="findUsersBy" resultMap="userNoPassword" parameterType="java.util.Map">
         SELECT U.*,'' AS ROLE_ID
         FROM T_SYS_USER U
         <where>
-            <if test='orgId!=null'>
+            <if test="selectAll==null or selectAll==''">
                 AND U.ORG_ID = #{orgId}
             </if>
         </where>

@@ -39,6 +39,7 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
         return this.securityMetadataSource;
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         FilterInvocation fi = new FilterInvocation(request, response, chain);
@@ -69,9 +70,11 @@ public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor imp
         }
     }
 
+    @Override
     public void init(FilterConfig arg0) throws ServletException {
     }
 
+    @Override
     public void destroy() {
     }
 

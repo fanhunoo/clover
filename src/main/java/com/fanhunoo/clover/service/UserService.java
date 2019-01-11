@@ -4,7 +4,7 @@ import com.fanhunoo.clover.entity.User;
 
 import java.util.List;
 
-public interface IUserService {
+public interface UserService {
     User findUserByName(String userName);
-    List<User> findUsersBy(Integer orgId);
+    List<User> findUsersBy(String selectAll,Integer orgId);
 }

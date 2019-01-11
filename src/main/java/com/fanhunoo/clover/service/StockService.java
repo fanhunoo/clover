@@ -2,7 +2,7 @@ package com.fanhunoo.clover.service;
 
 import com.fanhunoo.clover.entity.vo.StockVo;
 
-public interface IStockService {
+public interface StockService {
     /**
      * 获取商品类别编码
      * @return int

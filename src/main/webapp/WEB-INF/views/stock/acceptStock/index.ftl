@@ -207,7 +207,7 @@
             var _this = $(this);
             //2.ajax后台保存 如果是编辑还要删除之前的 ；失败-提示；成功：1本行除操作项其他置为diasabled，操作项改为编辑和上架
             $.ajax({
-                url:"../stock/addStock",
+                url:"../stock/acceptStock/add",
                 dataType:"json",
                 data: param,
                 type:"POST",
@@ -245,6 +245,7 @@
 
         //绑定函数--上架按钮
         $("body").on("click",".onSaleBtn",function(){
+            //TODO:
             layer.msg("上架");
         });
 
@@ -265,7 +266,7 @@
             //获取类别编码
             var stockType = "";
             $.ajax({
-                url:"../stock/getStockType",
+                url:"../stock/acceptStock/type",
                 type:"GET",
                 async:false,//同步获取
                 success:function(result){
