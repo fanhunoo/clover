@@ -80,6 +80,10 @@
                         }
                     }
                 }
+                ,{field: 'createDate', title: '创建时间',align:'center'}
+                ,{field: 'createPer', title: '创建人',align:'center'}
+                ,{field: 'updateDate', title: '更新时间',align:'center'}
+                ,{field: 'updatePer', title: '更新人',align:'center'}
             ]]
 //            ,parseData:function (res) {//数据加载后回调
 //                return res;
@@ -106,11 +110,15 @@
                                 type: 'DELETE',
                                 url: '${(request.contextPath)!}/system/resource/'+ obj.data.id,
                                 success: function(result) {
-                                    layer.msg(result.message);
-                                    obj.del();
+                                    if(result.statusCode==="200"){
+                                        layer.msg(result.message);
+                                        obj.del();
+                                    }else{
+                                        layer.alert(result.message);
+                                    }
                                 },
                                 error: function(){
-                                    layer.msg('删除资源信息异常!');
+                                    layer.alert('删除资源信息异常!');
                                 }
                             });
                             layer.close(index);
@@ -145,17 +153,22 @@
         //监听提交
         form.on('submit(formAddMenu)', function(data){
             $.ajax({
-                type: 'POST',
+                type: data.field.submitType,
+//                type: 'POST',
                 url: '${(request.contextPath)!}/system/resource/',
                 data: JSON.stringify(data.field) ,
                 dataType:'json',
                 contentType : 'application/json;charset=UTF-8',
                 success: function(result) {
-                    layer.msg(result.message);
-                    setTimeout("location.reload()", 900);//刷新页面
+                    if(result.statusCode==="200"){
+                        layer.msg(result.message);
+                        setTimeout("location.reload()", 900);//刷新页面
+                    }else{
+                        layer.alert(result.message);
+                    }
                 },
                 error: function(){
-                    layer.msg('保存资源信息异常!');
+                    layer.alert('保存资源信息异常!');
                 }
             });
             return false;//这里是拦截layui自带的提交
@@ -174,6 +187,8 @@
             $("#edit-url").val(obj.data.url);
             $("#edit-sort").val(obj.data.sort);
             $("#edit-remarkes").val(obj.data.remarkes);
+            $("#resource-submitType").val("PUT");//修改
+            $("#resource-id").val(obj.data.id);//修改
         }
 
         function beforeAdd() {
@@ -184,6 +199,8 @@
             $("#edit-url").val("");
             $("#edit-sort").val("");
             $("#edit-remarkes").val("");
+            $("#resource-submitType").val("POST");//新增
+            $("#resource-id").val("");
         }
 
         function selectChange(type) {

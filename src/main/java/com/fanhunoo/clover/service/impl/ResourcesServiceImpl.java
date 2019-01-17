@@ -50,4 +50,9 @@ public class ResourcesServiceImpl implements ResourcesService {
         //删除对应权限
         resourcesDao.deletePermissionByResourceId(id);
     }
+
+    @Override
+    public List<Resources> selectByRoleId(String roleId) {
+        return resourcesDao.selectByRoleId(roleId);
+    }
 }

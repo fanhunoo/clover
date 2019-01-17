@@ -4,6 +4,8 @@ import com.fanhunoo.clover.base.BaseEntity;
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
+
 /**
  * 系统资源表-实体类
  */
@@ -24,7 +26,7 @@ public class Resources extends BaseEntity {
     /**
      * 备注
      */
-    private String remarkes;
+    private String remark;
     /**
      * 资源类型（1-菜单;2-按钮;3-url）
      */
@@ -46,11 +48,8 @@ public class Resources extends BaseEntity {
     /**
      * 子菜单的json
      */
-    private String chirdJson;
+    private String childJson;
 
-    public static void main(String[] args) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encode = encoder.encode("123456");
-        System.out.println("-------------------------"+encode);
-    }
+    //子资源-用于构建资源树
+    private List<Resources> children;
 }

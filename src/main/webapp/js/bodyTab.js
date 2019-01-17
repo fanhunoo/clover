@@ -32,9 +32,9 @@ layui.define(["element","jquery"],function(exports){
             }else{
                 ulHtml += '<li class="layui-nav-item">';
             }
-            var chirdData = JSON.parse(data[i].chirdJson);
-            if(chirdData != undefined && chirdData.length > 0){
-            	//console.log(chirdData);
+            var childData = JSON.parse(data[i].childJson);
+            if(childData != undefined && childData.length > 0){
+            	//console.log(childData);
                 ulHtml += '<a>';
                 if(data[i].icon != undefined && data[i].icon != ''){
                     if(data[i].icon.indexOf("icon-") != -1){
@@ -47,20 +47,20 @@ layui.define(["element","jquery"],function(exports){
                 ulHtml += '<span class="layui-nav-more"></span>';
                 ulHtml += '</a>';
                 ulHtml += '<dl class="layui-nav-child">';
-                for(var j=0;j<chirdData.length;j++){
-                    if(chirdData[j].target == "_blank"){
-                        ulHtml += '<dd><a data-url="'+'.'+chirdData[j].url+'" target="'+chirdData[j].target+'">';
+                for(var j=0;j<childData.length;j++){
+                    if(childData[j].target == "_blank"){
+                        ulHtml += '<dd><a data-url="'+'.'+childData[j].url+'" target="'+childData[j].target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="'+'.'+chirdData[j].url+'">';
+                        ulHtml += '<dd><a data-url="'+'.'+childData[j].url+'">';
                     }
-                    if(chirdData[j].icon != undefined && chirdData[j].icon != ''){
-                        if(chirdData[j].icon.indexOf("icon-") != -1){
-                            ulHtml += '<i class="seraph '+chirdData[j].icon+'" data-icon="'+chirdData[j].icon+'"></i>';
+                    if(childData[j].icon != undefined && childData[j].icon != ''){
+                        if(childData[j].icon.indexOf("icon-") != -1){
+                            ulHtml += '<i class="seraph '+childData[j].icon+'" data-icon="'+childData[j].icon+'"></i>';
                         }else{
-                            ulHtml += '<i class="layui-icon" data-icon="'+chirdData[j].icon+'">'+chirdData[j].icon+'</i>';
+                            ulHtml += '<i class="layui-icon" data-icon="'+childData[j].icon+'">'+childData[j].icon+'</i>';
                         }
                     }
-                    ulHtml += '<cite>'+chirdData[j].name+'</cite></a></dd>';
+                    ulHtml += '<cite>'+childData[j].name+'</cite></a></dd>';
                 }
                 ulHtml += "</dl>";
             }else{

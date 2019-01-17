@@ -10,7 +10,7 @@
         <result property="phone" column="PHONE"/>
         <result property="status" column="STATUS"/>
         <result property="orgId" column="ORG_ID"/>
-        <result property="remarkes" column="REMARKES"/>
+        <result property="remark" column="REMARK"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="createPer" column="CREATE_PER"/>
         <result property="updateTime" column="UPDATE_TIME"/>
@@ -28,7 +28,7 @@
         <result property="phone" column="PHONE"/>
         <result property="status" column="STATUS"/>
         <result property="orgId" column="ORG_ID"/>
-        <result property="remarkes" column="REMARKES"/>
+        <result property="remark" column="REMARK"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="createPer" column="CREATE_PER"/>
         <result property="updateTime" column="UPDATE_TIME"/>
@@ -36,6 +36,8 @@
         <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
 
         <result property="roleId" column="ROLE_ID"/>
+        <result property="roleName" column="ROLE_NAME"/>
+        <result property="orgName" column="ORG_NAME"/>
     </resultMap>
 
     <select id="selectUser" resultMap="user" parameterType="int">
@@ -44,14 +46,19 @@
     </select>
 
     <select id="findUserByName" resultMap="user" parameterType="java.lang.String">
-        SELECT *
+        SELECT U.*,A.ROLE_ID AS ROLE_ID
 		FROM T_SYS_USER U LEFT JOIN T_SYS_AUTH A ON U.ID=A.USER_ID
-		WHERE USER_NAME=#{username}
+		WHERE U.USER_NAME=#{username}
     </select>
 
     <select id="findUsersBy" resultMap="userNoPassword" parameterType="java.util.Map">
-        SELECT U.*,'' AS ROLE_ID
-        FROM T_SYS_USER U
+        SELECT U.*,AUTH.ROLE_ID AS ROLE_ID,R.NAME AS ROLE_NAME,D.VALUE AS ORG_NAME
+        FROM T_SYS_USER U LEFT JOIN T_SYS_AUTH AUTH
+        ON U.ID = AUTH.USER_ID
+        LEFT JOIN T_SYS_ROLE R
+        ON R.ID = AUTH.ROLE_ID
+        LEFT JOIN T_SYS_DICTIONARY D
+        ON D.TITLE_CODE = 'ORG' AND D.STATUS =1 AND D.CODE = U.ORG_ID
         <where>
             <if test="selectAll==null or selectAll==''">
                 AND U.ORG_ID = #{orgId}
@@ -59,5 +66,43 @@
         </where>
         order by U.ID
     </select>
+
+
+    <insert id="saveUser" parameterType="com.fanhunoo.clover.entity.User">
+        <selectKey keyProperty="id" order="BEFORE" resultType="int">
+            SELECT SEQ_SYS_USER.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_SYS_USER(ID,PASS_WORD,USER_NAME,REAL_NAME,PHONE,STATUS,ORG_ID,REMARK,CREATE_TIME,CREATE_PER,UPDATE_TIME,UPDATE_PER,LAST_LOGIN_TIME)
+        VALUES (#{id},#{passWord,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{realName,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{orgId,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},sysdate,
+        #{createPer,jdbcType=VARCHAR},sysdate,#{updatePer,jdbcType=VARCHAR},#{lastLoginTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateUser" parameterType="com.fanhunoo.clover.entity.User">
+        UPDATE T_SYS_USER
+        <set>
+            <if test="passWord!= null and passWord != ''">PASS_WORD = #{passWord},</if>
+            <if test="userName!= null and userName != ''">USER_NAME = #{userName},</if>
+            <if test="realName!= null and realName != ''">REAL_NAME = #{realName},</if>
+            <if test="phone!= null and phone != ''">PHONE = #{phone},</if>
+            <if test="status!= null and status != ''">STATUS = #{status},</if>
+            <if test="orgId!= null and orgId != ''">ORG_ID = #{orgId},</if>
+            <if test="remark!= null and remark != ''">REMARK = #{remark},</if>
+            <if test="createTime!= null and createTime != ''">CREATE_TIME = #{createTime},</if>
+            <if test="createPer!= null and createPer != ''">CREATE_PER = #{createPer},</if>
+            <if test="updateTime!= null and updateTime != ''">UPDATE_TIME = #{updateTime},</if>
+            <if test="updatePer!= null and updatePer != ''">UPDATE_PER = #{updatePer},</if>
+            <if test="lastLoginTime!= null and lastLoginTime != ''">LAST_LOGIN_TIME = #{lastLoginTime},</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="java.lang.String">
+        DELETE T_SYS_USER WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAuthByUserId" parameterType="java.lang.String">
+        DELETE T_SYS_AUTH WHERE USER_ID = #{id}
+    </delete>
 
 </mapper>

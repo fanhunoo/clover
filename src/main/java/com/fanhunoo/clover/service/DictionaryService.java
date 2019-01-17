@@ -1,11 +1,9 @@
-package com.fanhunoo.clover.dao;
+package com.fanhunoo.clover.service;
 
 import com.fanhunoo.clover.entity.Dictionary;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface DictionaryDao {
+public interface DictionaryService {
     List<Dictionary> selectByTitle(String titleCode);
 }

@@ -21,10 +21,12 @@ public class User extends BaseEntity {
     //所在店id(0-总;1-1号店)
     private Integer orgId;
     //备注
-    private String remarkes;
+    private String remark;
     //最后登陆时间
     private LocalDateTime lastLoginTime;
 
     //----------冗余-----------//
     private String roleId;//角色
+    private String roleName;//角色名称
+    private String orgName;//所在店名称
 }

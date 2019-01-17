@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanhunoo.clover.dao.RoleDao">
+    <resultMap id="role" type="com.fanhunoo.clover.entity.Role">
+        <result property="code" column="CODE"/>
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="rank" column="RANK"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+   <select id="selectAll" resultMap="role">
+        SELECT * FROM T_SYS_ROLE
+   </select>
+
+   <select id="selectByRoleIdLimitRank" resultMap="role" parameterType="java.lang.String">
+        SELECT * FROM T_SYS_ROLE WHERE RANK   <![CDATA[ >= ]]> (
+            SELECT RANK FROM T_SYS_ROLE WHERE ID =  #{roleId}
+        ) AND STATUS =1
+   </select>
+
+    <update id="updateRole" parameterType="com.fanhunoo.clover.entity.Role">
+        UPDATE T_SYS_ROLE
+        <set>
+            <if test="code!= null and code != ''">CODE = #{code},</if>
+            <if test="name!= null and name != ''">NAME = #{name},</if>
+            <if test="rank!= null and rank != ''">RANK = #{rank},</if>
+            <if test="status!= null and status != ''">STATUS = #{status},</if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <insert id="saveRole" parameterType="com.fanhunoo.clover.entity.Role">
+        INSERT INTO T_SYS_ROLE(ID,CODE,NAME,RANK,STATUS)
+        VALUES (sys_guid(),#{code},#{name},#{rank},#{status})
+    </insert>
+
+    <delete id="deleteRoleById" parameterType="java.lang.String">
+        DELETE T_SYS_ROLE WHERE ID = #{id}
+    </delete>
+
+    <delete id="deletePermissionByRoleId" parameterType="java.lang.String">
+        DELETE T_SYS_PERMISSION WHERE ROLE_ID = #{id}
+    </delete>
+
+
+</mapper>

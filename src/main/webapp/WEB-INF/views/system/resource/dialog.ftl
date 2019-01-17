@@ -38,16 +38,16 @@
     <div class="layui-form-item">
         <label class="layui-form-label">备注：</label>
         <div class="layui-input-block">
-            <input type="text" name="remarkes" id="edit-remarkes" required placeholder="请输入备注" autocomplete="off" class="layui-input">
+            <input type="text" name="remark" id="edit-remark" required placeholder="请输入备注" autocomplete="off" class="layui-input">
         </div>
     </div>
-
-
     <div class="layui-form-item" style="">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit lay-filter="formAddMenu">立即提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
+    <input type="hidden" name="submitType" id="resource-submitType" >
+    <input type="hidden" name="id" id="resource-id">
 </form>
 

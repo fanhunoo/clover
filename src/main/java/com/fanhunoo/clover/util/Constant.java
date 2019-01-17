@@ -88,17 +88,10 @@ public class Constant {
      */
     public static final int COMMODITY_STATUS_DAMAGE = 104;
 
-    private static AtomicInteger typeCount = new AtomicInteger(0);
+    /**
+     * 字典编码-所属机构
+     */
+    public static final String DICTIONARY_TITLE_ORG = "ORG";
 
-    public static String getTypeCode(){
-        int count = typeCount.getAndIncrement();
-        if(count<10){
-           return  "0"+count;
-        }
-        if(count>99){
-            typeCount = new AtomicInteger(0);
-            return  "00";
-        }
-        return ""+count;
-    }
+
 }

@@ -12,4 +12,5 @@ public interface ResourcesService {
     void saveResource(Resources resources) throws Exception;
     void updateResource(Resources resources) throws Exception;
     void deleteResource(String id) throws Exception;
+    List<Resources> selectByRoleId(String roleId);
 }

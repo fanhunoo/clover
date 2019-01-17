@@ -73,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// 设置不拦截规则
-		web.ignoring().antMatchers("/plugins/**","/statics/**","/css/**","/layui/**","/js/**");
+		web.ignoring().antMatchers("/plugins/**","/statics/**","/css/**","/layui/**","/layui-xtree/**","/js/**");
 	}
 
 	@Override

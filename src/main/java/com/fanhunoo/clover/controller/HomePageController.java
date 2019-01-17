@@ -61,8 +61,8 @@ public class HomePageController {
         for(Resources secendMenu :secendMenus){
             List<Resources> thirdMenus = resourcesService.loadMenu(username, Constant.MENU_THIRD,secendMenu.getId());
             if(thirdMenus!=null && thirdMenus.size()>0){
-                String chirdJson = CommonUtils.objectToJson(thirdMenus);
-                secendMenu.setChirdJson(chirdJson);
+                String childJson = CommonUtils.objectToJson(thirdMenus);
+                secendMenu.setChildJson(childJson);
             }
         }
         return CommonUtils.objectToJson(secendMenus);

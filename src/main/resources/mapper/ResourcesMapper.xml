@@ -8,7 +8,7 @@
         <result property="id" column="ID"/>
         <result property="name" column="NAME"/>
         <result property="parentId" column="PARENT_ID"/>
-        <result property="remarkes" column="REMARKES"/>
+        <result property="remark" column="REMARK"/>
         <result property="sort" column="SORT"/>
         <result property="type" column="TYPE"/>
         <result property="updatePer" column="UPDATE_PER"/>
@@ -48,27 +48,26 @@
     </select>
 
     <insert id="saveResource" parameterType="com.fanhunoo.clover.entity.Resources">
-        INSERT INTO T_SYS_RESOURCES(ID,NAME,URL,TYPE,PARENT_ID,SORT,REMARKES,CREATE_TIME,CREATE_PER,UPDATE_TIME,UPDATE_PER,ICON)
+        INSERT INTO T_SYS_RESOURCES(ID,NAME,URL,TYPE,PARENT_ID,SORT,REMARK,CREATE_TIME,CREATE_PER,UPDATE_TIME,UPDATE_PER,ICON)
         VALUES (sys_guid(),#{name,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
-        #{parentId,jdbcType=VARCHAR},#{sort,jdbcType=VARCHAR},#{remarkes,jdbcType=VARCHAR},
+        #{parentId,jdbcType=VARCHAR},#{sort,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
         sysdate,#{createPer,jdbcType=VARCHAR},sysdate,#{updatePer,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR})
     </insert>
 
-    <update id="update" parameterType="com.fanhunoo.clover.entity.Resources">
+    <update id="updateResource" parameterType="com.fanhunoo.clover.entity.Resources">
         UPDATE T_SYS_RESOURCES
         <set>
-            <if test="id!= null and id != ''">ID = #{id}</if>
-            <if test="name!= null and name != ''">NAME = #{name}</if>
-            <if test="url!= null and url != ''">URL = #{url}</if>
-            <if test="type!= null and type != ''">TYPE = #{type}</if>
-            <if test="parentId!= null and parentId != ''">PARENT_ID = #{parentId}</if>
-            <if test="sort!= null and sort != ''">SORT = #{sort}</if>
-            <if test="remarkes!= null and remarkes != ''">REMARKES = #{remarkes}</if>
-            <if test="createTime!= null and createTime != ''">CREATE_TIME = #{createTime}</if>
-            <if test="createPer!= null and createPer != ''">CREATE_PER = #{createPer}</if>
-            <if test="updateTime!= null and updateTime != ''">UPDATE_TIME = sysdate</if>
-            <if test="updatePer!= null and updatePer != ''">UPDATE_PER = #{updatePer}</if>
-            <if test="icon!= null and icon != ''">ICON = #{icon}</if>
+            <if test="name!= null and name != ''">NAME = #{name},</if>
+            <if test="url!= null and url != ''">URL = #{url},</if>
+            <if test="type!= null and type != ''">TYPE = #{type},</if>
+            <if test="parentId!= null and parentId != ''">PARENT_ID = #{parentId},</if>
+            <if test="sort!= null and sort != ''">SORT = #{sort},</if>
+            <if test="remark!= null and remark != ''">REMARK = #{remark},</if>
+            <if test="createTime!= null and createTime != ''">CREATE_TIME = #{createTime},</if>
+            <if test="createPer!= null and createPer != ''">CREATE_PER = #{createPer},</if>
+            <if test="updateTime!= null and updateTime != ''">UPDATE_TIME = sysdate,</if>
+            <if test="updatePer!= null and updatePer != ''">UPDATE_PER = #{updatePer},</if>
+            <if test="icon!= null and icon != ''">ICON = #{icon},</if>
         </set>
         WHERE ID = #{id}
     </update>
@@ -87,6 +86,9 @@
         DELETE T_SYS_PERMISSION WHERE RESOURCES_ID = #{id}
     </delete>
 
-
+    <select id="selectByRoleId" parameterType="java.lang.String" resultMap="resources">
+        SELECT T.* FROM T_SYS_RESOURCES T ,T_SYS_PERMISSION P
+        WHERE T.ID = P.RESOURCES_ID AND P.ROLE_ID = #{roleId}
+    </select>
 
 </mapper>

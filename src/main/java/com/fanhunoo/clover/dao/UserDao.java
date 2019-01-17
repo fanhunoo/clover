@@ -11,4 +11,9 @@ public interface UserDao {
     User findUserByName(String username);
 
     List<User> findUsersBy(@Param("selectAll")String selectAll,@Param("orgId")Integer orgId);
+
+    void saveUser(User user);
+    void updateUser(User user);
+    void deleteUserById(String id);
+    void deleteAuthByUserId(String id);
 }

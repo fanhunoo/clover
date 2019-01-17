@@ -1,25 +1,23 @@
 package com.fanhunoo.clover.controller.system;
 
 import com.fanhunoo.clover.base.MyPage;
-import com.fanhunoo.clover.entity.Dictionary;
-import com.fanhunoo.clover.entity.User;
+import com.fanhunoo.clover.base.Result;
+import com.fanhunoo.clover.entity.Resources;
+import com.fanhunoo.clover.entity.Role;
 import com.fanhunoo.clover.security.MyUserDetails;
+import com.fanhunoo.clover.service.ResourcesService;
 import com.fanhunoo.clover.service.RoleService;
-import com.fanhunoo.clover.service.UserService;
+import com.fanhunoo.clover.util.CommonUtils;
 import com.fanhunoo.clover.util.Constant;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 系统管理--角色管理
@@ -28,14 +26,17 @@ import java.util.Set;
 @RequestMapping("/system/role")
 public class RoleController {
 
-    @Resource
+    @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private ResourcesService resourcesService;
 
     /**
      * 页面
      */
     @GetMapping("/")
-    public String user() {
+    public String role() {
         return "system/role/list";
     }
 
@@ -46,7 +47,103 @@ public class RoleController {
     @GetMapping("/list")
     public MyPage list(HttpServletRequest request) {
         PageHelper.startPage(request);
-        List<Dictionary> roles = roleService.findAllRole();
+        List<Role> roles = roleService.selectAll();
         return new MyPage(roles);
+    }
+
+
+    /**
+     * 保存角色
+     */
+    @PostMapping("/")
+    @ResponseBody
+    public Result save(@RequestBody Role role) {
+        Result result = new Result();
+        try {
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            role.setCreatePer(userDetails.getRealName());
+            role.setUpdatePer(userDetails.getRealName());
+            role.setStatus(role.getStatus()==null?0:1);
+            roleService.saveRole(role);
+            result.setStatusCode(Constant.SUCCESS);
+            result.setMessage("保存角色成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatusCode(Constant.FAILURE);
+            result.setMessage("保存角色出错！"+e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 更新角色
+     */
+    @PutMapping("/")
+    @ResponseBody
+    public Result edit(@RequestBody Role role) {
+        Result result = new Result();
+        try {
+            if(role==null || null==role.getId()){
+                throw new RuntimeException("角色id为空！");
+            }
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            role.setUpdatePer(userDetails.getRealName());
+            role.setStatus(role.getStatus()==null?0:1);
+            roleService.updateRole(role);
+            result.setStatusCode(Constant.SUCCESS);
+            result.setMessage("更新角色成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatusCode(Constant.FAILURE);
+            result.setMessage("更新角色出错！"+e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 删除角色
+     */
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public Result delete(@PathVariable String id){
+        Result result = new Result();
+        try {
+            if(StringUtils.isEmpty(id)){
+                throw new RuntimeException("角色id为空！");
+            }
+            roleService.deleteRoleById(id);
+            result.setStatusCode(Constant.SUCCESS);
+            result.setMessage("删除角色成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatusCode(Constant.FAILURE);
+            result.setMessage("删除角色出错！"+e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 获取权限
+     */
+    @GetMapping("/permission/{id}")
+    @ResponseBody
+    public Result permission(@PathVariable String id){
+        Result result = new Result();
+        try {
+            if(StringUtils.isEmpty(id)){
+                throw new RuntimeException("角色id为空！");
+            }
+            List<Resources> resources = resourcesService.selectByRoleId(id);
+            result.setData(CommonUtils.resourcesToTree(resources));//转换为树
+            result.setStatusCode(Constant.SUCCESS);
+            result.setMessage("获取权限成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatusCode(Constant.FAILURE);
+            result.setMessage("获取权限出错！"+e.getMessage());
+        }
+        return result;
     }
 }

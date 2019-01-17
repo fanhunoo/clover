@@ -14,6 +14,7 @@ public interface ResourcesDao {
     List<Resources> queryByCondition(Map<String,Object> param);
 
     List<Resources> loadMenu(@Param("username")String userName,@Param("type")Integer type,@Param("parentId")String parentId);
+    List<Resources> selectByRoleId(String roleId);
 
     void saveResource(Resources resources);
     void updateResource(Resources resources);

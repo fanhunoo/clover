@@ -1,6 +1,8 @@
 package com.fanhunoo.clover.util;
 
+import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.entity.User;
+import com.fanhunoo.clover.entity.vo.ResourceTreeNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CommonUtils {
 
@@ -73,4 +77,43 @@ public class CommonUtils {
             e.printStackTrace();
         }
     }
+
+    public static String encodePassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
+    }
+
+    public static String encodeDefaultPassword() {
+        String defaultPassword = "123456";//初始密码123456
+        return encodePassword(defaultPassword);
+    }
+
+    /**
+     * 将资源集合转换成树结构
+     */
+    public static List<Resources> resourcesToTree(List<Resources> resourcesList){
+        List<Resources> trees = new ArrayList<>();
+        for (Resources treeNode : resourcesList) {
+            if ("".equals(treeNode.getParentId())) {
+                trees.add(findResourceChildren(treeNode,resourcesList));
+            }
+        }
+        return trees;
+    }
+
+    /**
+     * 递归查找子节点
+     */
+    public static Resources findResourceChildren(Resources treeNode,List<Resources> treeNodes) {
+        treeNode.setChildren(new ArrayList<>());
+        for (Resources it : treeNodes) {
+            if(treeNode.getId().equals(it.getParentId())) {
+                if (treeNode.getChildren() == null) {
+                    treeNode.setChildren(new ArrayList<>());
+                }
+                treeNode.getChildren().add(findResourceChildren(it,treeNodes));
+            }
+        }
+        return treeNode;
+    }
+
 }
