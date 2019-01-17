@@ -20,15 +20,10 @@
     </div>
 </blockquote>
 <table id="role-list" lay-filter="role-table"></table>
-
-
 </body>
-<div id="role-info" style="display:none;" ><#include "./dialog_role.ftl"></div>
-<div id="permission-info" style="display:none;" ><#include "./dialog_permission.ftl"></div>
+<div id="role-info" style="display:none;" ><#include "./dialog.ftl"></div>
+<div id="permission-info" style="display:none;" ><div class="eleTree ele1" style="width: 80%;margin: auto;height:500px;"></div></div>
 <script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
-<#--<script type="text/javascript" src="${(request.contextPath)!}/plugins/zTree/js/jquery-1.4.4.min.js"></script>-->
-<#--<script type="text/javascript" src="${(request.contextPath)!}/plugins/zTree/js/jquery.ztree.all.js"></script>-->
-<script type="text/javascript" src="${(request.contextPath)!}/layui-xtree/layui-xtree.js"></script>
 <script>
     layui.config({
         base: "${(request.contextPath)!}/layui/lay/mymodules/"
@@ -36,13 +31,15 @@
         var table = layui.table;
         var form = layui.form;
         var $ = layui.$;
+        var eleTree = layui.eleTree;
+        var el;
         //第一个实例
         table.render({
             elem: '#role-list'
             ,url: '${(request.contextPath)!}/system/role/list' //数据接口
             ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
             ,cols: [[ //表头
-                {fixed: 'left',width:160,title: '操作', align:'center'
+                {fixed: 'left',width:240,title: '操作', align:'center'
                     ,toolbar: '<div><a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="permission">分配权限</a>' +
                             ' <a class="layui-btn layui-btn-normal layui-btn-radius layui-btn-xs" lay-event="edit">编辑</a>' +
                             ' <a class="layui-btn layui-btn-danger layui-btn-radius layui-btn-xs" lay-event="del">删除</a></div>'
@@ -84,7 +81,7 @@
                     type: 1,
                     title:"编辑角色",
                     skin: 'layui-layer-rim', //加上边框
-                    area: ['500px', '580px'], //宽高
+                    area: ['500px', '340px'], //宽高
                     content: $("#role-info")
                 });
             }else if(obj.event==="permission"){//分配权限
@@ -92,8 +89,34 @@
                 layer.open({
                     type: 1,
                     title:"分配权限",
+                    btn: ['确认', '取消'],
+                    btnAlign: 'c',
+                    yes: function(index, layero){
+                        var treeData = el.getChecked(false, true);
+                        var jsonStr = JSON.stringify(treeData);
+                        //console.log(JSON.stringify(treeData));
+                        // 获取选中的节点，接收两个 boolean 类型的参数，1. 是否只是叶子节点，默认值为 false 2. 是否包含半选节点，默认值为 false );
+                        $.ajax({
+                            type: "POST",
+                            url: '${(request.contextPath)!}/system/role/permission',
+                            data: {"data":jsonStr,"roleId":obj.data.id} ,
+                            dataType:'json',
+                            success: function(result) {
+                                if(result.statusCode==="200"){
+                                    layer.msg(result.message);
+                                    setTimeout("location.reload()", 900);//刷新页面
+                                }else{
+                                    layer.alert(result.message);
+                                }
+                            },
+                            error: function(){
+                                layer.alert('修改权限异常!');
+                            }
+                        });
+                    } ,
+                    btn2: function(index, layero){},
                     skin: 'layui-layer-rim', //加上边框
-                    area: ['600px', '680px'], //宽高
+                    area: ['300px', '610px'], //宽高
                     content: $("#permission-info")
                 });
             }
@@ -106,7 +129,7 @@
                 type: 1,
                 title:"添加角色",
                 skin: 'layui-layer-rim', //加上边框
-                area: ['500px', '580px'], //宽高
+                area: ['500px', '340px'], //宽高
                 content: $("#role-info")
             });
         });
@@ -136,30 +159,28 @@
         }
 
         function beforePermission(obj) {
-
-            var eleTree = layui.eleTree;
-            eleTree.render({
+            el = eleTree.render({
                 elem: '.ele1',
                 url:'${(request.contextPath)!}/system/role/permission/'+obj.data.id,
                 method:'GET',
+                showCheckbox: true,
+                defaultExpandAll:true,
+                checkStrictly:true,
                 request: {
-                    name: "label",
+                    name: "name",
                     key: "id",
-                    children: "children",
-                    checked: "checked",
-                    disabled: "disabled",
-                    isLeaf: "isLeaf"
-               }
-          //todo:      https://fly.layui.com/extend/eleTree/#doc
-        });
-
-            $("#role-code").val("");
-            $("#role-name").val("");
-            $("#role-rank").val("");
-            $("#role-status").prop("checked",true);
-            $("#role-submitType").val("POST");//新增
-            $("#role-id").val("");
-            form.render();
+                    children: "children"
+                },
+                response: {
+                    statusName: "statusCode",
+                    statusCode: "200",
+                    dataName: "data"
+                }
+//                ,done: function(res){
+//                    // res即为你接口返回的信息。
+//                    console.log(res);
+//                }
+            });
         }
 
         //监听提交
@@ -185,52 +206,6 @@
             return false;//这里是拦截layui自带的提交
         });
 
-
-
-//        var data=[
-//            {
-//                id: 1,
-//                label: "安徽省",
-//                children: [
-//                    {
-//                        id: 2,
-//                        label: "马鞍山市",
-//                        disabled: true,
-//                        children: [
-//                            {
-//                                id: 3,
-//                                label: "和县",
-//                            },
-//                            {
-//                                id: 4,
-//                                label: "花山区",
-//                            }
-//                        ]
-//                    }
-//                ]
-//            },
-//            {
-//                id: 5,
-//                label: "河南省",
-//                children: [
-//                    {
-//                        id: 6,
-//                        label: "郑州市",
-//                        checked: true
-//                    }
-//                ]
-//            }
-//        ]
-//        var eleTree = layui.eleTree;
-//        eleTree.render({
-//            elem: '.ele1',
-//            data: data,
-//            showCheckbox: true,
-//            defaultExpandAll:true
-//        });
-
-
     });
-
 </script>
 </html>

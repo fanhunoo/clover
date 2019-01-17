@@ -13,4 +13,5 @@ public interface ResourcesService {
     void updateResource(Resources resources) throws Exception;
     void deleteResource(String id) throws Exception;
     List<Resources> selectByRoleId(String roleId);
+    void updatePermission(String roleId, List<Map<String,String>> permissions) throws Exception;
 }

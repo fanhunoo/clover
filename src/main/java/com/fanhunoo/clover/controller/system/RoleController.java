@@ -17,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统管理--角色管理
@@ -135,7 +137,21 @@ public class RoleController {
             if(StringUtils.isEmpty(id)){
                 throw new RuntimeException("角色id为空！");
             }
-            List<Resources> resources = resourcesService.selectByRoleId(id);
+            //已经拥有的权限
+            List<Resources> hadResources = resourcesService.selectByRoleId(id);
+            MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            //可选择的权限（当前登录的用户）
+            List<Resources> resources = resourcesService.selectByRoleId(userDetails.getRoleId());
+            for(Resources resource : resources){
+                Iterator<Resources> itHad = hadResources.iterator();
+                while (itHad.hasNext()){
+                    if(StringUtils.equals(resource.getId(),itHad.next().getId())){
+                        resource.setChecked(true);
+                        itHad.remove();
+                        break;
+                    }
+                }
+            }
             result.setData(CommonUtils.resourcesToTree(resources));//转换为树
             result.setStatusCode(Constant.SUCCESS);
             result.setMessage("获取权限成功！");
@@ -143,6 +159,37 @@ public class RoleController {
             e.printStackTrace();
             result.setStatusCode(Constant.FAILURE);
             result.setMessage("获取权限出错！"+e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 修改权限
+     */
+    @PostMapping("/permission")
+    @ResponseBody
+    public Result updatePermission(HttpServletRequest request){
+        Result result = new Result();
+        try {
+            String roleId = request.getParameter("roleId");
+            String data = request.getParameter("data");
+            if(StringUtils.isEmpty(roleId)){
+                throw new RuntimeException("角色id为空！");
+            }
+            List<Map<String,String>> permissions = CommonUtils.getObjectMapper().readValue(data,List.class);
+            if(permissions != null && permissions.size()>0){
+                for(Map<String,String> map : permissions){
+                    map.put("roleId",roleId);
+                }
+            }
+            resourcesService.updatePermission(roleId,permissions);
+            result.setStatusCode(Constant.SUCCESS);
+            result.setMessage("修改权限成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setStatusCode(Constant.FAILURE);
+            result.setMessage("修改权限出错！"+e.getMessage());
         }
         return result;
     }

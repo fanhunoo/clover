@@ -21,4 +21,6 @@ public interface ResourcesDao {
     void deleteResource(String id);
     void deleteResourceContainChild(String id);
     void deletePermissionByResourceId(String id);
+    void deletePermissionByRoleId(String roleId);
+    void savePermissions(List<Map<String, String>> permissions);
 }

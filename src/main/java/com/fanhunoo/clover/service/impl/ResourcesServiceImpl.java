@@ -55,4 +55,13 @@ public class ResourcesServiceImpl implements ResourcesService {
     public List<Resources> selectByRoleId(String roleId) {
         return resourcesDao.selectByRoleId(roleId);
     }
+
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED)
+    public void updatePermission(String roleId, List<Map<String, String>> permissions) throws Exception {
+        //删除当前权限关系
+        resourcesDao.deletePermissionByRoleId(roleId);
+        //保存新的权限关系
+        resourcesDao.savePermissions(permissions);
+    }
 }

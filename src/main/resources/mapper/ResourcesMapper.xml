@@ -91,4 +91,16 @@
         WHERE T.ID = P.RESOURCES_ID AND P.ROLE_ID = #{roleId}
     </select>
 
+    <delete id="deletePermissionByRoleId" parameterType="java.lang.String" >
+        DELETE T_SYS_PERMISSION WHERE ROLE_ID = #{roleId}
+    </delete>
+
+    <insert id ="savePermissions" parameterType="java.util.List" >
+        INSERT INTO T_SYS_PERMISSION (ROLE_ID,RESOURCES_ID)
+        select A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT #{item.roleId},#{item.id} FROM dual
+        </foreach>
+        ) A
+    </insert >
 </mapper>

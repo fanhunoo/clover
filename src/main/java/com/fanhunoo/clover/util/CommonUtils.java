@@ -4,7 +4,9 @@ import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.entity.User;
 import com.fanhunoo.clover.entity.vo.ResourceTreeNode;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.lang.reflect.Field;
@@ -22,6 +24,9 @@ public class CommonUtils {
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
 
 
+    public static ObjectMapper getObjectMapper(){
+        return objectMapper==null?new ObjectMapper():objectMapper;
+    }
 
     public static String objectToJson(Object object){
         if(object==null){
@@ -93,7 +98,7 @@ public class CommonUtils {
     public static List<Resources> resourcesToTree(List<Resources> resourcesList){
         List<Resources> trees = new ArrayList<>();
         for (Resources treeNode : resourcesList) {
-            if ("".equals(treeNode.getParentId())) {
+            if (null == treeNode.getParentId() || "".equals(treeNode.getParentId())) {
                 trees.add(findResourceChildren(treeNode,resourcesList));
             }
         }

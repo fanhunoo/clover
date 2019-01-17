@@ -52,4 +52,6 @@ public class Resources extends BaseEntity {
 
     //子资源-用于构建资源树
     private List<Resources> children;
+    //是否选中-用于构建资源树
+    private boolean checked;
 }

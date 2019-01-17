@@ -57,15 +57,15 @@ public class HomePageController {
         String username = userDetails.getUsername();
         String parentId = request.getParameter("parentId");
         //获取二级菜单
-        List<Resources> secendMenus = resourcesService.loadMenu(username, Constant.MENU_SECOND,parentId);
-        for(Resources secendMenu :secendMenus){
-            List<Resources> thirdMenus = resourcesService.loadMenu(username, Constant.MENU_THIRD,secendMenu.getId());
+        List<Resources> secondMenus = resourcesService.loadMenu(username, Constant.MENU_SECOND,parentId);
+        for(Resources secondMenu :secondMenus){
+            List<Resources> thirdMenus = resourcesService.loadMenu(username, Constant.MENU_THIRD,secondMenu.getId());
             if(thirdMenus!=null && thirdMenus.size()>0){
                 String childJson = CommonUtils.objectToJson(thirdMenus);
-                secendMenu.setChildJson(childJson);
+                secondMenu.setChildJson(childJson);
             }
         }
-        return CommonUtils.objectToJson(secendMenus);
+        return CommonUtils.objectToJson(secondMenus);
     }
 
 
