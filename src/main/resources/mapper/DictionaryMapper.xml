@@ -12,7 +12,7 @@
     </resultMap>
 
    <select id="selectByTitle" resultMap="dictionary" parameterType="java.lang.String">
-        SELECT * FROM T_SYS_DICTIONARY WHERE TITLE_CODE = #{titleCode} AND STATUS =1
+        SELECT * FROM T_SYS_DICTIONARY WHERE TITLE_CODE = #{titleCode} AND STATUS =1 ORDER BY SORT
    </select>
 
 

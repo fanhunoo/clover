@@ -1,8 +1,10 @@
 package com.fanhunoo.clover.controller.stock;
 
 import com.fanhunoo.clover.base.Result;
+import com.fanhunoo.clover.entity.Dictionary;
 import com.fanhunoo.clover.entity.vo.StockVo;
 import com.fanhunoo.clover.security.MyUserDetails;
+import com.fanhunoo.clover.service.DictionaryService;
 import com.fanhunoo.clover.service.StockService;
 import com.fanhunoo.clover.service.UserService;
 import com.fanhunoo.clover.util.Constant;
@@ -28,12 +30,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/stock/acceptStock")
 public class AcceptStockController {
-
-    @Resource
-    private UserService userService;
-
     @Resource
     private StockService stockService;
+    @Resource
+    private DictionaryService dictionaryService;
 
     /**
      * 页面--入库管理
@@ -56,7 +56,7 @@ public class AcceptStockController {
         }
         //入库批次号
         String stockBatchId = new SimpleDateFormat("yyMMddHHmmssSSS").format((new Date()));
-        request.setAttribute("stockBatchId",stockBatchId);
+        request.setAttribute("stockBatchId","RK"+stockBatchId);
         request.setAttribute("season",season);
         //类别编码
         int stockType;
@@ -67,6 +67,12 @@ public class AcceptStockController {
             return "error/500";
         }
         request.setAttribute("stockType",stockType<10 ? "0"+stockType : ""+stockType);
+        List<Dictionary> goodsResources = dictionaryService.selectByTitle(Constant.DICTIONARY_TITLE_GOODS_RESOURCE);
+        request.setAttribute("goodsResources",goodsResources);
+        List<Dictionary> goodsSits = dictionaryService.selectByTitle(Constant.DICTIONARY_TITLE_GOODS_SIT);
+        request.setAttribute("goodsSits",goodsSits);
+        List<Dictionary> onsaleOrgs = dictionaryService.selectByTitle(Constant.DICTIONARY_TITLE_ORG);
+        request.setAttribute("onsaleOrgs",onsaleOrgs);
         return "stock/acceptStock/index";
     }
 

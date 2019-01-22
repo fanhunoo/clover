@@ -1,6 +1,10 @@
 package com.fanhunoo.clover.service;
 
+import com.fanhunoo.clover.entity.CommodityDetail;
 import com.fanhunoo.clover.entity.vo.StockVo;
+
+import java.util.List;
+import java.util.Map;
 
 public interface StockService {
     /**
@@ -19,4 +23,11 @@ public interface StockService {
      * @param stockVo
      */
     void saveStock(StockVo stockVo) throws Exception;
+
+    /**
+     * 查询库存信息
+     */
+    List<CommodityDetail> selectStock(CommodityDetail commodityDetail);
+
+    void onSale(Map<String,Object> param)throws Exception;
 }

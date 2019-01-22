@@ -46,9 +46,9 @@
                 ,{field: 'phone', title: '手机号',align:'center'}
                 ,{field: 'status', title: '状态',align:'center', templet: function(d){return d.status === 1?'启用':'禁用';}}
                 ,{field: 'remarkes', title: '备注',align:'center'}
-                ,{field: 'createDate', title: '创建时间',align:'center'}
+                ,{field: 'createTime', title: '创建时间',align:'center'}
                 ,{field: 'createPer', title: '创建人',align:'center'}
-                ,{field: 'updateDate', title: '更新时间',align:'center'}
+                ,{field: 'updateTime', title: '更新时间',align:'center'}
                 ,{field: 'updatePer', title: '更新人',align:'center'}
             ]]
         });

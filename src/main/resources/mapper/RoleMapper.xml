@@ -7,6 +7,10 @@
         <result property="name" column="NAME"/>
         <result property="rank" column="RANK"/>
         <result property="status" column="STATUS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="createPer" column="CREATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <result property="updatePer" column="UPDATE_PER"/>
     </resultMap>
 
    <select id="selectAll" resultMap="role">

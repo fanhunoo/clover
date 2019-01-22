@@ -19,7 +19,7 @@
     <div class="layui-inline">
         入库批次号：${stockBatchId!}
     </div>
-    <input type="hidden" id="rk-stockBatchId" name="stockBatchId" value="${stockBatchId!}"/>
+    <input type="hidden" id="rk-storageBatchId" name="stockBatchId" value="${stockBatchId!}"/>
 </blockquote>
 <div class="layui-table-box">
     <div class="layui-table-header">
@@ -93,10 +93,11 @@
                 </td>
                 <td class="td-resource">
                     <select class="data-resource layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="01">01厂</option>
-                        <option value="02">02厂</option>
-                        <option value="03">03厂</option>
-                        <option value="00">重新上架</option>
+                    <#if goodsResources??>
+                        <#list goodsResources as goodsResource>
+                            <option value="${goodsResource.code!}">${goodsResource.value!}</option>
+                        </#list>
+                    </#if>
                     </select>
                 </td>
                 <td class="td-jianshu"><input class="data-jianshu layui-center layui-table-edit layui-input"  style="font-size: 20px;"/></td>
@@ -122,9 +123,11 @@
                 <td><input disabled class="layui-center layui-table-edit layui-input" style="font-size: 16px;"/></td>
                 <td class="td-storage">
                     <select class="layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="01">仓库01</option>
-                        <option value="02">仓库02</option>
-                        <option value="03">仓库03</option>
+                    <#if goodsSits??>
+                        <#list goodsSits as goodsSit>
+                            <option value="${goodsSit.code!}">${goodsSit.value!}</option>
+                        </#list>
+                    </#if>
                     </select>
                 </td>
                 <td class="td-operator"><span style="font-size: 18px;">${realname!}</span></td>
@@ -165,11 +168,12 @@
             }
             var season = $(this).parents("tr").find('td[class="td-season"]').children().val();
             var resource = $(this).parents("tr").find('td[class="td-resource"]').children().val();
-            var $jianshuInput = $(this).parents("tr").find("td[class='td-jianshu']").children();
-            var jianshu = $jianshuInput.val();
-            if(util.isNull(jianshu)){
-                layer.tips('请填写件数！',$jianshuInput,{tips: [2, '#FF4444'],time: 4000});
-                $jianshuInput.focus();
+            var resourceName = $(this).parents("tr").find('td[class="td-resource"]').children().find("option:selected").text();
+            var $quantityInput = $(this).parents("tr").find("td[class='td-jianshu']").children();
+            var quantity = $quantityInput.val();
+            if(util.isNull(quantity)){
+                layer.tips('请填写件数！',$quantityInput,{tips: [2, '#FF4444'],time: 4000});
+                $quantityInput.focus();
                 return;
             }
             var $salePriceInput = $(this).parents("tr").find("td[class='td-salePrice']").children();
@@ -182,32 +186,36 @@
             var code = $(this).parents("tr").find('td[class="td-code"]').children().text();
             var size = $(this).parents("tr").find('td[class="td-size"]').children().val();
             var sex = $(this).parents("tr").find('td[class="td-sex"]').children().val();
-            var storage = $(this).parents("tr").find('td[class="td-storage"]').children().val();
+            var siteCode = $(this).parents("tr").find('td[class="td-storage"]').children().val();
+            var siteName = $(this).parents("tr").find('td[class="td-storage"]').children().find("option:selected").text();
             var operator = $(this).parents("tr").find('td[class="td-operator"]').children().text();
             var remark = $(this).parents("tr").find('td[class="td-remark"]').children().val();
             var purchasePrice = $(this).parents("tr").find('td[class="td-purchasePrice"]').children().val();
             var beforeCode = $(this).next().val();
-            var stockBatchId =$("#rk-stockBatchId").val();
+            var storageBatchId =$("#rk-storageBatchId").val();
             var param = {
                 "name" : name,
                 "season" : season,
-                "resource" : resource,
-                "jianshu" : jianshu,
+                "resourceCode" : resource,
+                "resourceName" : resourceName,
+                "quantity" : quantity,
                 "code" : code,
                 "sizeType" : size,
                 "sex" : sex,
-                "storage" : storage,
+                "siteCode" : siteCode,
+                "siteName" : siteName,
                 "operator" : operator,
                 "remark" : remark,
                 "beforeCode" : beforeCode,
-                "stockBatchId" : stockBatchId,
+                "storageBatchId" : storageBatchId,
                 "purchasePrice" : purchasePrice,
                 "salePrice" : salePrice
             };
+            //console.log("purchasePrice="+purchasePrice);
             var _this = $(this);
             //2.ajax后台保存 如果是编辑还要删除之前的 ；失败-提示；成功：1本行除操作项其他置为diasabled，操作项改为编辑和上架
             $.ajax({
-                url:"../stock/acceptStock/add",
+                url:"${(request.contextPath)!}/stock/acceptStock/add",
                 dataType:"json",
                 data: param,
                 type:"POST",
@@ -224,7 +232,7 @@
                     }
                 },
                 error: function(){
-                    layer.msg('入库操作异常!');
+                    layer.alert('入库操作异常!');
                 }
             });
 
@@ -266,7 +274,7 @@
             //获取类别编码
             var stockType = "";
             $.ajax({
-                url:"../stock/acceptStock/type",
+                url:"${(request.contextPath)!}/stock/acceptStock/type",
                 type:"GET",
                 async:false,//同步获取
                 success:function(result){
@@ -295,10 +303,7 @@
                     "                </td>\n" +
                     "                <td class=\"td-resource\">\n" +
                     "                    <select class=\"data-resource layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"01\">01厂</option>\n" +
-                    "                        <option value=\"02\">02厂</option>\n" +
-                    "                        <option value=\"03\">03厂</option>\n" +
-                    "                        <option value=\"00\">重新上架</option>\n" +
+                    "<#if goodsResources??><#list goodsResources as goodsResource><option value=\"${goodsResource.code!}\">${goodsResource.value!}</option></#list></#if>" +
                     "                    </select>\n" +
                     "                </td>\n" +
                     "                <td class=\"td-jianshu\"><input class=\"data-jianshu layui-center layui-table-edit layui-input\"  style=\"font-size: 20px;\"/></td>\n" +
@@ -324,9 +329,7 @@
                     "                <td><input disabled class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 16px;\"/></td>\n" +
                     "                <td class=\"td-storage\">\n" +
                     "                    <select class=\"layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"01\">仓库01</option>\n" +
-                    "                        <option value=\"02\">仓库02</option>\n" +
-                    "                        <option value=\"03\">仓库03</option>\n" +
+                    "<#if goodsSits??><#list goodsSits as goodsSit><option value=\"${goodsSit.code!}\">${goodsSit.value!}</option></#list></#if>" +
                     "                    </select>\n" +
                     "                </td>\n" +
                     "                <td class=\"td-operator\"><span style=\"font-size: 18px;\">${realname!}</span></td>\n" +
@@ -386,7 +389,7 @@
         function getNowFormatDate() {
             var date = new Date();
             var year = date.getFullYear().toString();
-            year = year.substring(2,2);
+            year = year.substring(2,4);
             var month = date.getMonth() + 1;
             var strDate = date.getDate();
             if (month >= 1 && month <= 9) {

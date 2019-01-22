@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +39,16 @@ public class ResourceController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public MyPage list(HttpServletRequest request) {
-       // PageHelper.startPage(request);
-        List<Resources> roles = resourcesService.queryAll();
+    public MyPage list() {
+        //按角色权限去查
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Resources> roles;
+        if(Constant.ROLE_SUPER_ADMIN.equals(userDetails.getRoleId())){
+            roles = resourcesService.queryAll();
+        }else{
+            roles = resourcesService.selectByRoleId(userDetails.getRoleId());
+        }
         return new MyPage(Constant.PAGE_SUCCESS,"",Long.valueOf(roles.size()),roles);
-//        return new MyPage(roles);
     }
 
     /**

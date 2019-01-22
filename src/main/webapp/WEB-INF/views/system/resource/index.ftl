@@ -67,7 +67,7 @@
                 }
                 ,{field:'name',width:300, title: '资源名称'}
                 ,{field:'url',width:300, title: 'url'}
-                ,{field:'type', title: 'type',
+                ,{field:'type', title: '类型',align:'center',
                     templet: function(d){
                         if(d.type === 1){
                             return '一级菜单';
@@ -80,9 +80,9 @@
                         }
                     }
                 }
-                ,{field: 'createDate', title: '创建时间',align:'center'}
+                ,{field: 'createTime', title: '创建时间',align:'center'}
                 ,{field: 'createPer', title: '创建人',align:'center'}
-                ,{field: 'updateDate', title: '更新时间',align:'center'}
+                ,{field: 'updateTime', title: '更新时间',align:'center'}
                 ,{field: 'updatePer', title: '更新人',align:'center'}
             ]]
 //            ,parseData:function (res) {//数据加载后回调

@@ -18,7 +18,31 @@
         <result property="updateTime" column="UPDATE_TIME"/>
     </resultMap>
 
-
+    <resultMap id="commodityDetail" type="com.fanhunoo.clover.entity.CommodityDetail">
+        <result property="beforeCode" column="BEFORE_CODE"/>
+        <result property="code" column="CODE"/>
+        <result property="id" column="ID"/>
+        <result property="image" column="IMAGE"/>
+        <result property="name" column="NAME"/>
+        <result property="onsaleBatchId" column="ONSALE_BATCH_ID"/>
+        <result property="purchasePrice" column="PURCHASE_PRICE"/>
+        <result property="remake" column="REMAKE"/>
+        <result property="resourceCode" column="RESOURCE_CODE"/>
+        <result property="resourceName" column="RESOURCE_NAME"/>
+        <result property="salePrice" column="SALE_PRICE"/>
+        <result property="season" column="SEASON"/>
+        <result property="sex" column="SEX"/>
+        <result property="siteCode" column="SITE_CODE"/>
+        <result property="siteName" column="SITE_NAME"/>
+        <result property="sizeType" column="SIZE_TYPE"/>
+        <result property="sortId" column="SORT_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="storageBatchId" column="STORAGE_BATCH_ID"/>
+        <result property="storagePer" column="STORAGE_PER"/>
+        <result property="storageTime" column="STORAGE_TIME"/>
+        <result property="updatePer" column="UPDATE_PER"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
     <!--获取类型编码序列-->
     <select id="getStockTypeSeq" resultType="int">
         SELECT seq_stock_type.nextval FROM dual
@@ -26,7 +50,7 @@
 
     <!--根据名称编码物理删除库存信息-->
     <delete id="deleteStorageLog" parameterType="java.lang.String">
-        DELETE T_STORAGE_LOG WHERE CODE = #{nameCode}
+        DELETE T_STORAGE_LOG WHERE NAME_CODE = #{nameCode}
     </delete>
 
     <!--根据名称编码物理删除库存信息-->
@@ -55,21 +79,22 @@
         UPDATE_PER)
         VALUES (
         #{id,jdbcType=VARCHAR},
-        #{stockBatchId,jdbcType=VARCHAR},
+        #{storageBatchId,jdbcType=VARCHAR},
         #{code,jdbcType=VARCHAR},
         #{jianshu,jdbcType=INTEGER},
         #{operator,jdbcType=VARCHAR},
         sysdate,
         #{salePrice,jdbcType=DECIMAL},
-        #{resource,jdbcType=VARCHAR},
-        #{resource,jdbcType=VARCHAR},
-        #{storage,jdbcType=VARCHAR},
-        #{storage,jdbcType=VARCHAR},
+        #{resourceCode,jdbcType=VARCHAR},
+        #{resourceName,jdbcType=VARCHAR},
+        #{siteCode,jdbcType=VARCHAR},
+        #{siteName,jdbcType=VARCHAR},
         sysdate,
         #{operator,jdbcType=VARCHAR}
         )
     </insert>
 
+    <!--插入商品信息-->
     <insert id="saveCommodityDetail" parameterType="com.fanhunoo.clover.entity.CommodityDetail">
         <selectKey keyProperty="id" order="BEFORE" resultType="string">
             SELECT SEQ_COMMODITY_DETAIL.NEXTVAL id from dual
@@ -78,12 +103,12 @@
         VALUES (#{id},#{name},#{code},#{salePrice},#{season},#{sizeType},#{sex},#{status},#{resourceCode},#{resourceName},#{storageTime},#{storagePer},#{storageBatchId},#{sortId},#{siteCode},#{siteName},#{remake},#{updateTime},#{updatePer},#{purchasePrice},#{image},#{beforeCode})
     </insert>
 
-
-
+    <!--批量插入商品信息-->
     <insert id="saveCommodityDetailList" parameterType="java.util.List">
         INSERT INTO T_COMMODITY_DETAIL(
         ID,
         NAME,
+        NAME_CODE,
         CODE,
         SALE_PRICE,
         SEASON,
@@ -109,6 +134,7 @@
         <foreach collection="list" item="item" index="index" separator="UNION ALL">
             SELECT
             #{item.name,jdbcType=VARCHAR},
+            #{item.nameCode,jdbcType=VARCHAR},
             #{item.code,jdbcType=VARCHAR},
             #{item.salePrice,jdbcType=DECIMAL},
             #{item.season,jdbcType=VARCHAR},
@@ -134,5 +160,68 @@
         ) A
     </insert>
 
+    <!--查询商品信息-->
+    <select id="selectStock" resultMap="commodityDetail" parameterType="com.fanhunoo.clover.entity.CommodityDetail">
+        SELECT * FROM T_COMMODITY_DETAIL
+        <where>
+            <if test='storageBatchId!=null and storageBatchId!=""'>
+                and STORAGE_BATCH_ID = #{storageBatchId}
+            </if>
+            <if test='status!=null and status!=""'>
+                and STATUS = #{status}
+            </if>
+            <if test='season!=null and season!=""'>
+                and SEASON = #{season}
+            </if>
+            <if test='resourceCode!=null and resourceCode!=""'>
+                and RESOURCE_CODE = #{resourceCode}
+            </if>
+            <if test='onsaleBatchId!=null and onsaleBatchId!=""'>
+                and ONSALE_BATCH_ID = #{onsaleBatchId}
+            </if>
+            <if test='id!=null and id!=""'>
+                and ID = #{id}
+            </if>
+            <if test='code!=null and code!=""'>
+                and CODE = #{code}
+            </if>
+            <if test='nameCode!=null and nameCode!=""'>
+                and NAME_CODE = #{nameCode}
+            </if>
+        </where>
+        ORDER BY STORAGE_BATCH_ID,NAME_CODE,SORT_ID
+    </select>
+
+    <!--插入上架记录表-->
+    <insert id="saveOnSaleLog" parameterType="java.util.Map">
+        <selectKey keyProperty="id" order="BEFORE" resultType="string">
+            SELECT SEQ_ONSALE_LOG.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_ONSALE_LOG (
+        ID,ONSALE_BATCH_ID,QUANTITY,
+        RESOURCE_CODE,RESOURCE_NAME,ORG_ID,
+        ONSALE_PER,ONSALE_TIME,CHECK_TIME,
+        CHECK_PER,CHECK_STATUS
+        ) VALUES  (
+        #{id,jdbcType=VARCHAR},#{onsaleBatchId,jdbcType=VARCHAR},#{quantity,jdbcType=INTEGER},
+        #{resourceCode,jdbcType=VARCHAR},#{resourceName,jdbcType=VARCHAR},#{orgId,jdbcType=VARCHAR},
+        #{onsalePer,jdbcType=VARCHAR},sysdate,#{checkTime,jdbcType=TIMESTAMP},
+        #{checkPer,jdbcType=VARCHAR},#{checkStatus,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateCommodityDetailList" parameterType="java.util.Map">
+        UPDATE T_COMMODITY_DETAIL
+        SET
+          UPDATE_TIME = sysdate,
+          UPDATE_PER = #{onsalePer},
+          ONSALE_BATCH_ID = #{onsaleBatchId},
+          STATUS = #{status}
+        WHERE ID IN (
+        <foreach collection="stocks" item="item" index="index" separator=",">
+            #{item.id}
+        </foreach>
+        )
+    </update>
 
 </mapper>

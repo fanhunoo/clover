@@ -1,6 +1,7 @@
 package com.fanhunoo.clover.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,9 +20,13 @@ public class CommodityDetail {
      */
     private String name;
     /**
-     * 名称编码（名称编码+序号=编码）
+     * 编码（名称编码+序号=编码）
      */
     private String code;
+    /**
+     * 名称编码
+     */
+    private String nameCode;
     /**
      * 定价
      */
@@ -53,6 +58,7 @@ public class CommodityDetail {
     /**
      * 入库时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime storageTime;
     /**
      * 入库操作员
@@ -81,6 +87,7 @@ public class CommodityDetail {
     /**
      * 更新时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     /**
      * 更新人
@@ -89,7 +96,7 @@ public class CommodityDetail {
     /**
      * 进价
      */
-    private String purchasePrice;
+    private Double purchasePrice;
     /**
      * 预览图
      */

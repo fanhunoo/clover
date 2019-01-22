@@ -53,10 +53,25 @@
 		<!-- JSON -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- 支持java8 localDate等新时间类型的序列化 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 		<!-- 数据库 -->
 		<!--<dependency>-->
@@ -64,6 +79,7 @@
 		<!--<artifactId>ojdbc7</artifactId>-->
 		<!--<version>12.1.0.1</version>-->
 		<!--</dependency>-->
+
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc7</artifactId>
@@ -183,7 +199,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		<!--jackson用于将springfox返回的文档对象转换成JSON字符串包括jackson-databind包-->
+		<!--jackson用于将springfox返回的文档对象转换成JSON字符串包括jackson-databind包
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -193,7 +209,7 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.version}</version>
-		</dependency>
+		</dependency>-->
 		<!--petStore是官方提供的一个代码参考, 可用于后期写文档时进行参考, 可不加-->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -259,7 +275,7 @@
 			<version>${security.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -276,7 +292,7 @@
 			<artifactId>aopalliance</artifactId>
 			<version>1.0</version>
 		</dependency>
- -->
+
 
 		<!-- 一些常用jar包 -->
 		<dependency>

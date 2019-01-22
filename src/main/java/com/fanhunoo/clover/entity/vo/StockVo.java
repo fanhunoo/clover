@@ -19,11 +19,15 @@ public class StockVo{
     /**
      * 来源
      */
-    private String resource;
+    private String resourceCode;
+    /**
+     * 来源名称（厂家、丢失牌、重新上架等）
+     */
+    private String resourceName;
     /**
      * 件数
      */
-    private Integer jianshu;
+    private Integer quantity;
     /**
      * 名称编码
      */
@@ -39,7 +43,11 @@ public class StockVo{
     /**
      * 存放地点
      */
-    private String storage;
+    private String siteCode;
+    /**
+     * 存放地点名称
+     */
+    private String siteName;
     /**
      * 操作员
      */
@@ -55,7 +63,7 @@ public class StockVo{
     /**
      * 入库批次号
      */
-    private String stockBatchId;
+    private String storageBatchId;
     /**
      * 进价
      */

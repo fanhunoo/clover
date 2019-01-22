@@ -2,10 +2,10 @@ package com.fanhunoo.clover.dao;
 
 import com.fanhunoo.clover.entity.CommodityDetail;
 import com.fanhunoo.clover.entity.vo.StockVo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface StockDao {
@@ -19,5 +19,7 @@ public interface StockDao {
 
     void saveCommodityDetailList(  List<CommodityDetail> commodityDetails) throws Exception;
 
-
+    List<CommodityDetail> selectStock(CommodityDetail commodityDetail);
+    void saveOnSaleLog(Map<String, Object> param)throws Exception;
+    void updateCommodityDetailList(Map<String, Object> param)throws Exception;
 }

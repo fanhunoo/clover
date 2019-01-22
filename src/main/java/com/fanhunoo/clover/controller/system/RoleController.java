@@ -48,8 +48,10 @@ public class RoleController {
     @ResponseBody
     @GetMapping("/list")
     public MyPage list(HttpServletRequest request) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         PageHelper.startPage(request);
-        List<Role> roles = roleService.selectAll();
+//        List<Role> roles = roleService.selectAll();
+        List<Role> roles = roleService.selectByRoleIdLimitRank(userDetails.getRoleId());
         return new MyPage(roles);
     }
 

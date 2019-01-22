@@ -48,6 +48,10 @@
                 ,{field: 'name', title: '角色名称',align:'center'}
                 ,{field: 'rank', title: '级别',align:'center'}
                 ,{field: 'status', title: '状态',align:'center', templet: function(d){return d.status === 1?'启用':'禁用';}}
+                ,{field: 'createTime', title: '创建时间',align:'center'}
+                ,{field: 'createPer', title: '创建人',align:'center'}
+                ,{field: 'updateTime', title: '更新时间',align:'center'}
+                ,{field: 'updatePer', title: '更新人',align:'center'}
             ]]
         });
 

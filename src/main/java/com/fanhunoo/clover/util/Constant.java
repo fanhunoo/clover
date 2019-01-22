@@ -92,6 +92,13 @@ public class Constant {
      * 字典编码-所属机构
      */
     public static final String DICTIONARY_TITLE_ORG = "ORG";
+    /**
+     * 字典编码-货品来源
+     */
+    public static final String DICTIONARY_TITLE_GOODS_RESOURCE = "GOODS_RESOURCE";    /**
+     * 字典编码-货品存放地点
+     */
+    public static final String DICTIONARY_TITLE_GOODS_SIT = "GOODS_SIT";
 
 
 }
