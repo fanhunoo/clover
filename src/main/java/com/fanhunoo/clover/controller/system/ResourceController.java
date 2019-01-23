@@ -5,6 +5,7 @@ import com.fanhunoo.clover.base.Result;
 import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.security.MyUserDetails;
 import com.fanhunoo.clover.service.ResourcesService;
+import com.fanhunoo.clover.util.CommonUtils;
 import com.fanhunoo.clover.util.Constant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class ResourceController {
         //按角色权限去查
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Resources> roles;
-        if(Constant.ROLE_SUPER_ADMIN.equals(userDetails.getRoleId())){
+        if(CommonUtils.checkSpecialPermission(userDetails.getRoleId())){
             roles = resourcesService.queryAll();
         }else{
             roles = resourcesService.selectByRoleId(userDetails.getRoleId());

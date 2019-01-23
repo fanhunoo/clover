@@ -102,7 +102,7 @@
                 } ,
                 btn2: function(index, layero){},
                 skin: 'layui-layer-rim', //加上边框
-                area: ['300px', '250px'], //宽高
+                area: ['300px', '350px'], //宽高
                 content: $("#onSale-info")
             });
         });

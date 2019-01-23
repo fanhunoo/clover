@@ -3,10 +3,12 @@ package com.fanhunoo.clover.util;
 import com.fanhunoo.clover.entity.Resources;
 import com.fanhunoo.clover.entity.User;
 import com.fanhunoo.clover.entity.vo.ResourceTreeNode;
+import com.fanhunoo.clover.security.MyUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.lang.reflect.Field;
@@ -120,5 +122,11 @@ public class CommonUtils {
         }
         return treeNode;
     }
+
+    public static boolean checkSpecialPermission(String roleId){
+        return StringUtils.equals(roleId, Constant.ROLE_SUPER_ADMIN)
+                || StringUtils.equals(roleId, Constant.ROLE_BOSS);
+    }
+
 
 }

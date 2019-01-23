@@ -59,7 +59,7 @@ public class UserController {
         PageHelper.startPage(request);
         List<User> users;
         //如果是超管或老板角色，则可查询所有角色，否则只能查询当前机构
-        if(StringUtils.equals(roleId, Constant.ROLE_SUPER_ADMIN) || StringUtils.equals(roleId, Constant.ROLE_BOSS)){
+        if(CommonUtils.checkSpecialPermission(roleId)){
             users = userService.findUsersBy("selectAll",null);
         }else {
             users = userService.findUsersBy(null,userDetails.getOrgId());

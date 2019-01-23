@@ -50,7 +50,6 @@ public class RoleController {
     public MyPage list(HttpServletRequest request) {
         MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         PageHelper.startPage(request);
-//        List<Role> roles = roleService.selectAll();
         List<Role> roles = roleService.selectByRoleIdLimitRank(userDetails.getRoleId());
         return new MyPage(roles);
     }
@@ -143,7 +142,12 @@ public class RoleController {
             List<Resources> hadResources = resourcesService.selectByRoleId(id);
             MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             //可选择的权限（当前登录的用户）
-            List<Resources> resources = resourcesService.selectByRoleId(userDetails.getRoleId());
+            List<Resources> resources;
+            if(CommonUtils.checkSpecialPermission(userDetails.getRoleId())){
+                resources = resourcesService.queryAll();
+            }else{
+                resources = resourcesService.selectByRoleId(userDetails.getRoleId());
+            }
             for(Resources resource : resources){
                 Iterator<Resources> itHad = hadResources.iterator();
                 while (itHad.hasNext()){

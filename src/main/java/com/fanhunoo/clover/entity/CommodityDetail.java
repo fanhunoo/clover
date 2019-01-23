@@ -40,7 +40,7 @@ public class CommodityDetail {
      */
     private String sizeType;
     /**
-     * 性别款式（0-中性;1-男性;2-女性)
+     * 性别款式（9-中性;1-男性;0-女性)
      */
     private String sex;
     /**
