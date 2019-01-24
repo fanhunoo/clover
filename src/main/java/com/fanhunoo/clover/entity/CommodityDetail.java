@@ -109,4 +109,15 @@ public class CommodityDetail {
      * 上架批次号
      */
     private String onsaleBatchId;
+    /**
+     * 下架批次号
+     */
+    private String offsaleBatchId;
+    /**
+     * 转移批次号
+     */
+    private String moveBatchId;
+
+    //冗余：用于构建treeTable
+    private String parentId;
 }

@@ -225,6 +225,9 @@
                         form.render('select');
                     });
                     $("#select-parent").get(0).selectedIndex = 0;
+                },
+                error: function(){
+                    layer.alert('查询父级资源异常!');
                 }
             });
         }

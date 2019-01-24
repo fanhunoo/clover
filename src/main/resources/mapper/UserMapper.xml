@@ -18,6 +18,8 @@
         <result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
 
         <result property="roleId" column="ROLE_ID"/>
+        <result property="roleName" column="ROLE_NAME"/>
+        <result property="orgName" column="ORG_NAME"/>
     </resultMap>
 
     <!-- 不展示密码 用于业务-->
@@ -46,8 +48,12 @@
     </select>
 
     <select id="findUserByName" resultMap="user" parameterType="java.lang.String">
-        SELECT U.*,A.ROLE_ID AS ROLE_ID
+        SELECT U.*,A.ROLE_ID AS ROLE_ID,R.NAME AS ROLE_NAME,D.VALUE AS ORG_NAME
 		FROM T_SYS_USER U LEFT JOIN T_SYS_AUTH A ON U.ID=A.USER_ID
+		LEFT JOIN T_SYS_ROLE R
+        ON R.ID = A.ROLE_ID
+        LEFT JOIN T_SYS_DICTIONARY D
+        ON D.TITLE_CODE = 'ORG' AND D.STATUS =1 AND D.CODE = U.ORG_ID
 		WHERE U.USER_NAME=#{username}
     </select>
 

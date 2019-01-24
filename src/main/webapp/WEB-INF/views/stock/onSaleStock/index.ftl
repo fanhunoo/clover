@@ -21,7 +21,6 @@
     <div class="layui-inline">
         上架批次号：${onSaleBatchId!}
     </div>
-    <input type="hidden" id="onSaleBatchId" name="onSaleBatchId" value="${onSaleBatchId!}"/>
 </blockquote>
 
 <div>
@@ -38,7 +37,7 @@
         table.render({
             elem: '#onSale-list'
             ,url: '${(request.contextPath)!}/stock/onSale/list' //数据接口
-            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[10, 15, 20, 30, 50]} //开启分页
+            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limit'],limits:[10, 15, 20, 30, 50]} //开启分页
             ,cols: [[ //表头
                 {type:'checkbox'}
                 ,{field: 'code', title: '商品编码', align:'center'}

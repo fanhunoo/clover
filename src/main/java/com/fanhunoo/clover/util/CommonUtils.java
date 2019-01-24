@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class CommonUtils {
 
@@ -41,6 +42,19 @@ public class CommonUtils {
             e.printStackTrace();
         }
         return json;
+    }
+
+    public static Map<String,Object> objectToMap(Object object){
+        if(object==null){
+            return null;
+        }
+        Map<String,Object> res = null;//返回字符串，输出thirdMenus;
+        try {
+            res = objectMapper.readValue(objectMapper.writeValueAsString(object),Map.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public static String formatNowDateTime(){

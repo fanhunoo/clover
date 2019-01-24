@@ -49,6 +49,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
                 user.getPhone(),
                 user.getOrgId(),
                 user.getLastLoginTime(),
-                user.getRoleId());
+                user.getRoleId(),
+                user.getOrgName());
     }
 }

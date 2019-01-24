@@ -49,7 +49,7 @@ public class ResourceController {
         }else{
             roles = resourcesService.selectByRoleId(userDetails.getRoleId());
         }
-        return new MyPage(Constant.PAGE_SUCCESS,"",Long.valueOf(roles.size()),roles);
+        return new MyPage(Constant.PAGE_SUCCESS,"", (long) roles.size(),roles);
     }
 
     /**

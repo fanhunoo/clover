@@ -31,7 +31,7 @@
         table.render({
             elem: '#user-list'
             ,url: '${(request.contextPath)!}/system/user/list' //数据接口
-            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
+            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limit'],limits:[10, 5, 15, 20, 50]} //开启分页
             ,cols: [[ //表头
                 {fixed: 'left',width:160,title: '操作', align:'center'
                     ,toolbar: '<div><a class="layui-btn layui-btn-normal layui-btn-radius layui-btn-xs" lay-event="edit">编辑</a>' +

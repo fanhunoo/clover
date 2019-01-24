@@ -49,8 +49,8 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<CommodityDetail> selectStock(CommodityDetail commodityDetail){
-        return stockDao.selectStock(commodityDetail);
+    public List<CommodityDetail> selectStock(Map<String,Object> param){
+        return stockDao.selectStock(param);
     }
 
     @Override
@@ -59,6 +59,24 @@ public class StockServiceImpl implements StockService {
         //1.新增上架记录
         stockDao.saveOnSaleLog(param);
         //2.批量修改商品的上架信息
+        stockDao.updateCommodityDetailList(param);
+    }
+
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED)
+    public void offSale(Map<String, Object> param) throws Exception {
+        //1.新增下架记录
+        stockDao.saveOffSaleLog(param);
+        //2.批量修改商品的下架信息
+        stockDao.updateCommodityDetailList(param);
+    }
+
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED)
+    public void move(Map<String, Object> param) throws Exception {
+        //1.新增转移记录
+        stockDao.saveMoveLog(param);
+        //2.批量修改商品的转移信息
         stockDao.updateCommodityDetailList(param);
     }
 

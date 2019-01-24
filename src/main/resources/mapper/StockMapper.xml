@@ -23,7 +23,10 @@
         <result property="code" column="CODE"/>
         <result property="id" column="ID"/>
         <result property="image" column="IMAGE"/>
+        <result property="moveBatchId" column="MOVE_BATCH_ID"/>
         <result property="name" column="NAME"/>
+        <result property="nameCode" column="NAME_CODE"/>
+        <result property="offsaleBatchId" column="OFFSALE_BATCH_ID"/>
         <result property="onsaleBatchId" column="ONSALE_BATCH_ID"/>
         <result property="purchasePrice" column="PURCHASE_PRICE"/>
         <result property="remake" column="REMAKE"/>
@@ -42,6 +45,7 @@
         <result property="storageTime" column="STORAGE_TIME"/>
         <result property="updatePer" column="UPDATE_PER"/>
         <result property="updateTime" column="UPDATE_TIME"/>
+
     </resultMap>
     <!--获取类型编码序列-->
     <select id="getStockTypeSeq" resultType="int">
@@ -161,7 +165,7 @@
     </insert>
 
     <!--查询商品信息-->
-    <select id="selectStock" resultMap="commodityDetail" parameterType="com.fanhunoo.clover.entity.CommodityDetail">
+    <select id="selectStock" resultMap="commodityDetail" parameterType="java.util.Map">
         SELECT * FROM T_COMMODITY_DETAIL
         <where>
             <if test='storageBatchId!=null and storageBatchId!=""'>
@@ -185,8 +189,19 @@
             <if test='code!=null and code!=""'>
                 and CODE = #{code}
             </if>
+            <if test='siteCode!=null and siteCode!=""'>
+                and SITE_CODE = #{siteCode}
+            </if>
             <if test='nameCode!=null and nameCode!=""'>
                 and NAME_CODE = #{nameCode}
+            </if>
+
+
+            <if test='nameLike!=null and nameLike!=""'>
+                and NAME LIKE '%' || #{nameLike} || '%'
+            </if>
+            <if test='containStoraged =="N"'>
+                and STATUS != 100
             </if>
         </where>
         ORDER BY STORAGE_BATCH_ID,NAME_CODE,SORT_ID
@@ -210,16 +225,59 @@
         )
     </insert>
 
+    <!--插入下架记录表-->
+    <insert id="saveOffSaleLog" parameterType="java.util.Map">
+        <selectKey keyProperty="id" order="BEFORE" resultType="string">
+            SELECT SEQ_OFFSALE_LOG.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_OFFSALE_LOG (
+        ID,OFFSALE_BATCH_ID,QUANTITY,ORG_ID,OFFSALE_PER,OFFSALE_TIME,CHECK_TIME,CHECK_PER,CHECK_STATUS
+        ) VALUES  (
+        #{id,jdbcType=VARCHAR},#{offsaleBatchId,jdbcType=VARCHAR},#{quantity,jdbcType=INTEGER},#{orgId,jdbcType=VARCHAR},
+        #{offsalePer,jdbcType=VARCHAR},sysdate,#{checkTime,jdbcType=TIMESTAMP},#{checkPer,jdbcType=VARCHAR},#{checkStatus,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <!--插入转移记录表-->
+    <insert id="saveMoveLog" parameterType="java.util.Map">
+        <selectKey keyProperty="id" order="BEFORE" resultType="string">
+            SELECT SEQ_MOVE_LOG.NEXTVAL id from dual
+        </selectKey>
+        INSERT INTO T_MOVE_LOG (
+        ID,MOVE_BATCH_ID,QUANTITY,RESOURCE_CODE,RESOURCE_NAME,TARGET_CODE,TARGET_NAME,MOVE_PER,MOVE_TIME,CHECK_TIME,CHECK_PER,CHECK_STATUS
+        ) VALUES  (
+        #{id,jdbcType=VARCHAR},#{moveBatchId,jdbcType=VARCHAR},#{quantity,jdbcType=INTEGER},#{resourceCode,jdbcType=VARCHAR},
+        #{resourceName,jdbcType=VARCHAR},#{targetCode,jdbcType=VARCHAR},#{targetName,jdbcType=VARCHAR},
+        #{movePer,jdbcType=VARCHAR},sysdate,#{checkTime,jdbcType=TIMESTAMP},#{checkPer,jdbcType=VARCHAR},#{checkStatus,jdbcType=INTEGER}
+        )
+    </insert>
+
     <update id="updateCommodityDetailList" parameterType="java.util.Map">
         UPDATE T_COMMODITY_DETAIL
         SET
+          <if test='siteCode!=null and siteCode!=""'>
+            SITE_CODE = #{siteCode},
+          </if>
+          <if test='siteName!=null and siteName!=""'>
+            SITE_NAME = #{siteName},
+          </if>
+          <if test='onsaleBatchId!=null and onsaleBatchId!=""'>
+            ONSALE_BATCH_ID = #{onsaleBatchId},
+          </if>
+          <if test='offsaleBatchId!=null and offsaleBatchId!=""'>
+            OFFSALE_BATCH_ID = #{offsaleBatchId},
+          </if>
+          <if test='moveBatchId!=null and moveBatchId!=""'>
+            MOVE_BATCH_ID = #{moveBatchId},
+          </if>
+          <if test='status!=null and status!=""'>
+              STATUS = #{status},
+          </if>
           UPDATE_TIME = sysdate,
-          UPDATE_PER = #{onsalePer},
-          ONSALE_BATCH_ID = #{onsaleBatchId},
-          STATUS = #{status}
-        WHERE ID IN (
-        <foreach collection="stocks" item="item" index="index" separator=",">
-            #{item.id}
+          UPDATE_PER = #{updatePer}
+        WHERE STATUS = #{statusBefore} AND CODE IN (
+        <foreach collection="codes" item="item" index="index" separator=",">
+            #{item}
         </foreach>
         )
     </update>

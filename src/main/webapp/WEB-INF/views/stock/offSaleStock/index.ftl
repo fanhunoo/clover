@@ -13,8 +13,6 @@
     <link rel="stylesheet" href="${(request.contextPath)!}/css/public.css" media="all"/>
 </head>
 <body>
-
-
 <blockquote class="layui-elem-quote">
     <div class="layui-inline">
         下架批次号：${offSaleBatchId!}
@@ -71,27 +69,46 @@
 
 
 </div>
-
 </body>
-
 <script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
 <script type="text/javascript" src="${(request.contextPath)!}/js/common/util.js"></script>
 <script>
     layui.use(['form','layer'],function(){
-        var form = layui.form,
-                layer = layui.layer ,
+        var layer = layui.layer ,
                 $ = layui.$;
-        var util = new Util();
-        //绑定函数--入库按钮
-        $("body").on("click",".yyrukuBtn",function(){
-
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim', //加上边框
-                area: ['800px', '500px'], //宽高
-                content: $("#choose-onsale-addr")
-            });
-
+        //下架
+        $("body").on("click",".offSale",function(){
+            layer.confirm('此操作不可撤销，确定要下架吗？',function(index){
+                var codeArr = [];
+                $("#table-offSale").find("tr").each(function(){
+                    var tdArr = $(this).children();
+                    var codeText = tdArr.eq(1).text();
+                    codeArr.push(codeText);
+                });
+                if(codeArr.length<1){
+                    layer.close(index);
+                    return;
+                }
+                var jsonStr = JSON.stringify(codeArr);
+                $.ajax({
+                    type: "POST",
+                    url: '${(request.contextPath)!}/stock/offSale/',
+                    data: {"data":jsonStr,"offSaleBatchId":"${offSaleBatchId!}"} ,
+                    dataType:'json',
+                    success: function(result) {
+                        if(result.statusCode==="200"){
+                            layer.msg(result.message);
+                            setTimeout("location.reload()", 900);//刷新页面
+                        }else{
+                            layer.alert(result.message);
+                        }
+                    },
+                    error: function(){
+                        layer.alert('下架异常!');
+                    }
+                });
+                layer.close(index);
+            }, function(){});
         });
 
         //删除本行
@@ -184,9 +201,6 @@
                 }
             });
         }
-
-
-
     })
 
 </script>

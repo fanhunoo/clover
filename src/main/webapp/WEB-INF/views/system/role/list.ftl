@@ -37,7 +37,7 @@
         table.render({
             elem: '#role-list'
             ,url: '${(request.contextPath)!}/system/role/list' //数据接口
-            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limits'],limits:[1, 2, 3, 4, 5]} //开启分页
+            ,page: {layout: ['count', 'prev', 'page', 'next', 'skip', 'limit'],limits:[10, 5, 15, 20, 50]} //开启分页
             ,cols: [[ //表头
                 {fixed: 'left',width:240,title: '操作', align:'center'
                     ,toolbar: '<div><a class="layui-btn layui-btn-radius layui-btn-xs" lay-event="permission">分配权限</a>' +

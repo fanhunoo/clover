@@ -13,23 +13,38 @@
     <link rel="stylesheet" href="${(request.contextPath)!}/css/public.css" media="all"/>
 </head>
 <body>
-
-
 <blockquote class="layui-elem-quote">
     <div class="layui-inline">
-        入库批次号：${stockBatchId!}
+        转移批次号：${moveBatchId!}
     </div>
-    <input type="hidden" id="rk-stockBatchId" name="stockBatchId" value="${stockBatchId!}"/>
+    <input type="hidden" id="moveBatchId" name="moveBatchId" value="${moveBatchId!}"/>
+    <div class="layui-inline">
+        <input type="text" id="moveCodeInput" placeholder="请输入商品编码" autocomplete="off" class="layui-input"/>
+    </div>
+    <div class="layui-inline">
+        <a class="layui-btn layui-btn-primary" id="moveFind" >查询</a>
+    </div>
+    <div class="layui-inline">
+        <label>选择店铺：</label>
+        <select id="move-orgId" style="width: 80px;height: 36px;">
+        <#if orgs??>
+            <#list orgs as org>
+                <option value="${org.code!}">${org.value!}</option>
+            </#list>
+        </#if>
+        </select>
+        <a class="layui-btn layui-btn-normal" id="move">确认转移</a>
+    </div>
 </blockquote>
 <div class="layui-table-box">
     <div class="layui-table-header">
-        <table id="table-ruku" cellspacing="0" cellpadding="0" border="0" class="layui-table">
+        <table id="table-move" cellspacing="0" cellpadding="0" border="0" class="layui-table">
             <thead>
             <tr>
                 <th style="width: 3%">
-                    <div  align="center">
-                        <button class="addTrBtn layui-btn layui-btn-xs layui-btn-radius  layui-btn-normal" > &nbsp;添加&nbsp;</button>
-                    </div>
+                </th>
+                <th style="width: 11%">
+                    <div class="" align="center"><span>编码</span></div>
                 </th>
                 <th style="width: 11%">
                     <div class="" align="center"><span>名称</span></div>
@@ -41,359 +56,163 @@
                     <div class="" align="center"><span>厂商</span></div>
                 </th>
                 <th style="width: 4%">
-                    <div class="" align="center"><span>件数</span></div>
-                </th>
-                <th style="width: 11%">
-                    <div class="" align="center"><span>编码</span></div>
-                </th>
-                <th style="width: 4%">
                     <div class="" align="center"><span>尺码</span></div>
                 </th>
                 <th style="width: 4%">
                     <div class="" align="center"><span>男女</span></div>
                 </th>
                 <th style="width: 5%">
-                    <div class="" align="center"><span>进价</span></div>
-                </th>
-                <th style="width: 5%">
-                    <div class="" align="center"><span>定价</span></div>
+                    <div class="" align="center"><span>价格</span></div>
                 </th>
                 <th style="width: 6%">
                     <div class="" align="center"><span>预览图</span></div>
                 </th>
-                <th style="width: 5%">
-                    <div class="" align="center"><span>入库地点</span></div>
-                </th>
-                <th style="width: 8%">
-                    <div class="" align="center"><span>操作员</span></div>
-                </th>
                 <th style="width: 8%">
                     <div class="" align="center"><span>备注</span></div>
-                </th>
-                <th style="width: 8%">
-                    <div class="" align="center"><span>操作</span></div>
                 </th>
             </tr>
             </thead>
             <tbody>
-            <tr stockType="${stockType!}">
-                <td>
-                    <div  align="center">
-                        <button class="deleteTrBtn layui-btn layui-btn-xs layui-btn-radius layui-btn-danger" > &nbsp;删除&nbsp;</button>
-                    </div>
-                </td>
-                <td class="td-name"><input  class="layui-center layui-table-edit layui-input" style="font-size: 18px;"/></td>
-                <td class="td-season">
-                    <select class="data-season layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="C" <#if season?? && season == "C">selected</#if>>春</option>
-                        <option value="X" <#if season?? && season == "X">selected</#if>>夏</option>
-                        <option value="Q" <#if season?? && season == "Q">selected</#if>>秋</option>
-                        <option value="D" <#if season?? && season == "D">selected</#if>>冬</option>
-                    </select>
-                </td>
-                <td class="td-resource">
-                    <select class="data-resource layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="01">01厂</option>
-                        <option value="02">02厂</option>
-                        <option value="03">03厂</option>
-                        <option value="00">重新上架</option>
-                    </select>
-                </td>
-                <td class="td-jianshu"><input class="data-jianshu layui-center layui-table-edit layui-input"  style="font-size: 20px;"/></td>
-                <td class="td-code"><span  class="layui-center layui-table-edit layui-input" style="font-size: 18px;padding-top: 12px;"></span></td>
-                <td class="td-size">
-                    <select class="layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="L">L</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
-                    </select>
-                </td>
-                <td class="td-sex">
-                    <select class="layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="0">女款</option>
-                        <option value="1">男款</option>
-                        <option value="9">中性款</option>
-                    </select>
-                </td>
-                <td class="td-purchasePrice"><input  class="layui-center layui-table-edit layui-input" style="font-size: 16px;"/></td>
-                <td class="td-salePrice"><input  class="layui-center layui-table-edit layui-input" style="font-size: 16px;"/></td>
-                <td><input disabled class="layui-center layui-table-edit layui-input" style="font-size: 16px;"/></td>
-                <td class="td-storage">
-                    <select class="layui-center layui-table-edit" style="font-size: 16px;">
-                        <option value="01">仓库01</option>
-                        <option value="02">仓库02</option>
-                        <option value="03">仓库03</option>
-                    </select>
-                </td>
-                <td class="td-operator"><span style="font-size: 18px;">${realname!}</span></td>
-                <td class="td-remark"><input  class="layui-center layui-table-edit layui-input" style="font-size: 16px;"/></td>
-                <td>
-                    <button class="rukuBtn layui-btn layui-btn-sm" style="width: 50%;margin-left: 25%">入库</button>
-                </td>
-            </tr>
             </tbody>
         </table>
     </div>
 
 
 </div>
-
 </body>
 <script type="text/javascript" src="${(request.contextPath)!}/layui/layui.js"></script>
 <script type="text/javascript" src="${(request.contextPath)!}/js/common/util.js"></script>
 <script>
-    layui.use(['form','layer','layedit','laydate','upload'],function(){
-        var form = layui.form,
-                layer = layui.layer ,
-                laypage = layui.laypage,
-                upload = layui.upload,
-                layedit = layui.layedit,
-                laydate = layui.laydate,
+    layui.use(['form','layer'],function(){
+        var layer = layui.layer ,
                 $ = layui.$;
-        var util = new Util();
-        //绑定函数--入库按钮
-        $("body").on("click",".rukuBtn",function(){
-            //1.checkParam()
-            var $nameInput = $(this).parents("tr").find('td[class="td-name"]').children();
-            var name = $nameInput.val();
-            if(util.isNull(name)){
-                layer.tips('请填写名称！', $nameInput,{tips: [2, '#FF4444'],time: 4000});
-                $nameInput.focus();
-                return;
-            }
-            var season = $(this).parents("tr").find('td[class="td-season"]').children().val();
-            var resource = $(this).parents("tr").find('td[class="td-resource"]').children().val();
-            var $jianshuInput = $(this).parents("tr").find("td[class='td-jianshu']").children();
-            var jianshu = $jianshuInput.val();
-            if(util.isNull(jianshu)){
-                layer.tips('请填写件数！',$jianshuInput,{tips: [2, '#FF4444'],time: 4000});
-                $jianshuInput.focus();
-                return;
-            }
-            var $salePriceInput = $(this).parents("tr").find("td[class='td-salePrice']").children();
-            var salePrice = $salePriceInput.val();
-            if(util.isNull(salePrice)){
-                layer.tips('请填写定价！',$salePriceInput,{tips: [2, '#FF4444'],time: 4000});
-                $salePriceInput.focus();
-                return;
-            }
-            var code = $(this).parents("tr").find('td[class="td-code"]').children().text();
-            var size = $(this).parents("tr").find('td[class="td-size"]').children().val();
-            var sex = $(this).parents("tr").find('td[class="td-sex"]').children().val();
-            var storage = $(this).parents("tr").find('td[class="td-storage"]').children().val();
-            var operator = $(this).parents("tr").find('td[class="td-operator"]').children().text();
-            var remark = $(this).parents("tr").find('td[class="td-remark"]').children().val();
-            var purchasePrice = $(this).parents("tr").find('td[class="td-purchasePrice"]').children().val();
-            var beforeCode = $(this).next().val();
-            var stockBatchId =$("#rk-stockBatchId").val();
-            var param = {
-                "name" : name,
-                "season" : season,
-                "resource" : resource,
-                "jianshu" : jianshu,
-                "code" : code,
-                "sizeType" : size,
-                "sex" : sex,
-                "storage" : storage,
-                "operator" : operator,
-                "remark" : remark,
-                "beforeCode" : beforeCode,
-                "stockBatchId" : stockBatchId,
-                "purchasePrice" : purchasePrice,
-                "salePrice" : salePrice
-            };
-            var _this = $(this);
-            //2.ajax后台保存 如果是编辑还要删除之前的 ；失败-提示；成功：1本行除操作项其他置为diasabled，操作项改为编辑和上架
-            $.ajax({
-                url:"../stock/addStock",
-                dataType:"json",
-                data: param,
-                type:"POST",
-                success:function(result){
-                    if("200" === result.statusCode){
-                        layer.msg("入库成功!【编码："+code+";共"+jianshu+"件】");
-                        _this.parents("tr").attr("saved","saved");
-                        _this.parents("tr").find('td').children().attr("disabled","disabled");
-                        var html = "<button class=\"editBtn layui-btn layui-btn-warm layui-btn-sm\" style=\"width: 35%;margin-left: 10%\">编辑</button>" +
-                                "<button class=\"onSaleBtn layui-btn layui-btn-normal layui-btn-sm\" style=\"width: 35%;\">上架</button>";
-                        _this.parent().html(html);
-                    }else{
-                        layer.msg('入库操作失败!'+result.message);
-                    }
-                },
-                error: function(){
-                    layer.msg('入库操作异常!');
+        //转移
+        $("body").on("click","#move",function(){
+            var orgId = $("#move-orgId").val();
+            var orgName = $("#move-orgId").find("option:selected").text();
+            layer.confirm('此操作不可撤销，确定要转移到【'+orgName+'】吗？',function(index){
+                var codeArr = [];
+                $("#table-move").find("tr").each(function(){
+                    var tdArr = $(this).children();
+                    var codeText = tdArr.eq(1).text();
+                    codeArr.push(codeText);
+                });
+                if(codeArr.length<1){
+                    layer.close(index);
+                    return;
                 }
-            });
-
-        });
-
-        //绑定函数--编辑按钮
-        $("body").on("click",".editBtn",function(){
-            $(this).parents("tr").find('td').children().removeAttr("disabled");
-            var code = $(this).parents("tr").find('td[class="td-code"]').children().text();
-            var html = "<button class=\"rukuBtn layui-btn layui-btn-sm\" style=\"width:50%;margin-left:25%\">入库</button>" +
-                    "<input type=\"hidden\" class=\"editpch\" value=\""+code+"\"/>";
-            $(this).parent().html(html);
-        });
-
-        //绑定函数--上架按钮
-        $("body").on("click",".onSaleBtn",function(){
-            layer.msg("上架");
-        });
-
-        //绑定函数--编码生成
-        $("body").on("change",".data-resource",function(){
-            generateCode(this);
-        });
-        $("body").on("blur",".data-jianshu",function(){
-            $(this).val($(this).val().replace(/[^0-9]/g,''));
-            generateCode(this);
-        });
-        $("body").on("change",".data-season",function(){
-            generateCode(this);
-        });
-
-        //添加一行tr
-        $("body").on("click",".addTrBtn",function(){
-            //获取类别编码
-            var stockType = "";
-            $.ajax({
-                url:"../stock/getStockType",
-                type:"GET",
-                async:false,//同步获取
-                success:function(result){
-                    if("200" === result.statusCode){
-                        stockType = result.data.stockType;
+                var jsonStr = JSON.stringify(codeArr);
+                $.ajax({
+                    type: "POST",
+                    url: '${(request.contextPath)!}/stock/move/',
+                    data: {"data":jsonStr,"orgId":orgId,"orgName":orgName,"moveBatchId":"${moveBatchId!}"} ,
+                    dataType:'json',
+                    success: function(result) {
+                        if(result.statusCode==="200"){
+                            layer.msg(result.message);
+                            setTimeout("location.reload()", 900);//刷新页面
+                        }else{
+                            layer.alert(result.message);
+                        }
+                    },
+                    error: function(){
+                        layer.alert('转移异常!');
                     }
-                },
-                error: function(){
-                    layer.msg('获取类别编码异常!');
-                }
-            });
-            var html = "<tr stockType="+stockType+">\n" +
-                    "                <td>\n" +
-                    "                    <div  align=\"center\">\n" +
-                    "                        <button class=\"deleteTrBtn layui-btn layui-btn-xs layui-btn-radius layui-btn-danger\" > &nbsp;删除&nbsp;</button>\n" +
-                    "                    </div>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-name\"><input  class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 18px;\"/></td>\n" +
-                    "                <td class=\"td-season\">\n" +
-                    "                    <select class=\"data-season layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"C\" "+"<#if season?? && season == 'C'>selected</#if>"+">春</option>\n" +
-                    "                        <option value=\"X\" "+"<#if season?? && season == 'X'>selected</#if>"+">夏</option>\n" +
-                    "                        <option value=\"Q\" "+"<#if season?? && season == 'Q'>selected</#if>"+">秋</option>\n" +
-                    "                        <option value=\"D\" "+"<#if season?? && season == 'D'>selected</#if>"+">冬</option>\n" +
-                    "                    </select>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-resource\">\n" +
-                    "                    <select class=\"data-resource layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"01\">01厂</option>\n" +
-                    "                        <option value=\"02\">02厂</option>\n" +
-                    "                        <option value=\"03\">03厂</option>\n" +
-                    "                        <option value=\"00\">重新上架</option>\n" +
-                    "                    </select>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-jianshu\"><input class=\"data-jianshu layui-center layui-table-edit layui-input\"  style=\"font-size: 20px;\"/></td>\n" +
-                    "                <td class=\"td-code\"><span  class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 18px;padding-top: 12px;\"></span></td>\n" +
-                    "                <td class=\"td-size\">\n" +
-                    "                    <select class=\"layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"L\">L</option>\n" +
-                    "                        <option value=\"S\">S</option>\n" +
-                    "                        <option value=\"M\">M</option>\n" +
-                    "                        <option value=\"XL\">XL</option>\n" +
-                    "                        <option value=\"XXL\">XXL</option>\n" +
-                    "                    </select>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-sex\">\n" +
-                    "                    <select class=\"layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"0\">女款</option>\n" +
-                    "                        <option value=\"1\">男款</option>\n" +
-                    "                        <option value=\"9\">中性款</option>\n" +
-                    "                    </select>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-purchasePrice\"><input  class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 16px;\"/></td>\n" +
-                    "                <td class=\"td-salePrice\"><input  class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 16px;\"/></td>\n" +
-                    "                <td><input disabled class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 16px;\"/></td>\n" +
-                    "                <td class=\"td-storage\">\n" +
-                    "                    <select class=\"layui-center layui-table-edit\" style=\"font-size: 16px;\">\n" +
-                    "                        <option value=\"01\">仓库01</option>\n" +
-                    "                        <option value=\"02\">仓库02</option>\n" +
-                    "                        <option value=\"03\">仓库03</option>\n" +
-                    "                    </select>\n" +
-                    "                </td>\n" +
-                    "                <td class=\"td-operator\"><span style=\"font-size: 18px;\">${realname!}</span></td>\n" +
-                    "                <td class=\"td-remark\"><input  class=\"layui-center layui-table-edit layui-input\" style=\"font-size: 16px;\"/></td>\n" +
-                    "                <td>\n" +
-                    "                    <button class=\"rukuBtn layui-btn layui-btn-sm\" style=\"width: 50%;margin-left: 25%\">入库</button>\n" +
-                    "                </td>\n" +
-                    "            </tr>";
-            $("#table-ruku").append(html);
+                });
+                layer.close(index);
+            }, function(){});
         });
 
         //删除本行
-        $("body").on("click",".deleteTrBtn",function(){
+        $("body").on("click",".moveDeleteTrBtn",function(){
             var $tr = $(this).parents("tr");
-            if("saved" === $tr.attr("saved")){
-                layer.confirm('已入库的数据删除后将无法恢复，确定要删除吗？',function(index){
-                    //todo:ajax删除
-                    $tr.remove();
-                    layer.msg("已删除");
-                    layer.close(index);
-                }, function(){});
-            }else{
+            layer.confirm('确定要删除吗？',function(index){
                 $tr.remove();
+                layer.close(index);
+            }, function(){});
+        });
+
+        //查询
+        $("body").on("click","#moveFind",function(){
+            var code = $("#moveCodeInput").val();
+            getGoods(code);
+        });
+        //input框回车查询
+        $("body").on("keydown","#moveCodeInput",function(event){
+            if(event.keyCode===13){
+                var code = $("#moveCodeInput").val();
+                getGoods(code);
             }
         });
 
-        //自动生成编码
-        function generateCode(obj) {
-            var jianshu = $(obj).parents("tr").find('td[class="td-jianshu"]').children().val();
-            var stockType = $(obj).parents("tr").attr('stockType');
-            if(jianshu==''){
+        function getGoods(code) {
+            var flag = false;
+            $("#table-move").find("tr").each(function(){
+                var tdArr = $(this).children();
+                var codeText = tdArr.eq(1).text();
+                if(codeText==code){
+                    flag = true;
+                    return false;
+                }
+            });
+            if(flag){
+                layer.alert("当前商品已存在！请勿重复添加！");
                 return;
             }
-            var season = $(obj).parents("tr").find('td[class="td-season"]').children().val();
-            var resource = $(obj).parents("tr").find('td[class="td-resource"]').children().val();
-            var nowDate = getNowFormatDate();
-            if(jianshu==1){
-                $(obj).parents("tr").find('td[class="td-code"]').children().text(season+stockType+nowDate+resource+"001");
-                return;
-            }else if(jianshu>1 && jianshu <10){
-                jianshu = "00" + jianshu;
-            }else if(jianshu>=10 && jianshu <100){
-                jianshu = "0" + jianshu;
-            }
-            $(obj).parents("tr").find('td[class="td-code"]').children().text(season+stockType+nowDate+resource+"001~"+jianshu);
+            $.ajax({
+                type: 'GET',
+                url: '${(request.contextPath)!}/stock/detail/'+ code,
+                success: function(result){
+                    if(result.statusCode==="200"){
+                        var data = result.data;
+                        var seasonStr = "";
+                        if(data.season === "C"){
+                            seasonStr = "春季款"
+                        }else if(data.season === "X"){
+                            seasonStr = "夏季款"
+                        }else if(data.season === "Q"){
+                            seasonStr = "秋季款"
+                        }else if(data.season === "D"){
+                            seasonStr = "冬季款"
+                        }
+                        var sexStr = "";
+                        if(data.sex === "0"){
+                            sexStr = "女款"
+                        }else if(data.sex === "1"){
+                            sexStr = "男款"
+                        }else if(data.sex === "9"){
+                            sexStr = "中性款"
+                        }
+                        if(data.remake===null){
+                            data.remake = "";
+                        }
+                        var html = "<tr>" +
+                                "      <td>" +
+                                "          <div  align=\"center\">" +
+                                "               <button class=\"moveDeleteTrBtn layui-btn layui-btn-xs layui-btn-radius layui-btn-danger\" > &nbsp;删除&nbsp;</button>\n" +
+                                "          </div>\n" +
+                                "       </td>\n" +
+                                "       <td style=\"text-align:center;\">"+data.code+"</td>" +
+                                "       <td style=\"text-align:center;\">"+data.name+"</td>" +
+                                "       <td style=\"text-align:center;\">"+seasonStr+"</td>" +
+                                "       <td style=\"text-align:center;\">"+data.resourceName+"</td>" +
+                                "       <td style=\"text-align:center;\">"+data.sizeType+"</td>" +
+                                "       <td style=\"text-align:center;\">"+sexStr+"</td>" +
+                                "       <td style=\"text-align:center;\">"+data.salePrice+"</td>" +
+                                "       <td style=\"text-align:center;\"></td>" +
+                                "       <td style=\"text-align:center;\">"+data.remake+"</td>" +
+                                "   </tr>";
+                        $("#table-move").append(html);
+                        $("#moveCodeInput").focus();
+                    }else{
+                        layer.alert(result.message);
+                    }
+                },
+                error: function(){
+                    layer.alert('查询商品信息异常!');
+                }
+            });
         }
-        
-        //绑定函数--限制输入
-        $("body").on("keyup",".data-jianshu",function(){
-            $(this).val($(this).val().replace(/[^0-9]/g,''));
-        });
-        $("body").on("afterpaste",".data-jianshu",function(){
-            $(this).val($(this).val().replace(/[^0-9]/g,''));
-        });
-
-        //获取当前时间，格式YYMMDD
-        function getNowFormatDate() {
-            var date = new Date();
-            var year = date.getFullYear().toString();
-            year = year.substring(2,2);
-            var month = date.getMonth() + 1;
-            var strDate = date.getDate();
-            if (month >= 1 && month <= 9) {
-                month = "0" + month;
-            }
-            if (strDate >= 0 && strDate <= 9) {
-                strDate = "0" + strDate;
-            }
-            return year  + month  + strDate;
-        }
-
-
     })
 
 </script>

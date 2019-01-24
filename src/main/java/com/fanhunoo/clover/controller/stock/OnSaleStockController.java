@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 库存管理--上架管理
@@ -49,6 +46,7 @@ public class OnSaleStockController {
         return "stock/onSaleStock/index";
     }
 
+    //TODO:支持按code查单件（包括页面）
     /**
      * 数据接口--待上架查询
      */
@@ -58,7 +56,7 @@ public class OnSaleStockController {
         //查询已入库的
         commodityDetail.setStatus(Constant.COMMODITY_STATUS_STORAGED);
         PageHelper.startPage(request);
-        List<CommodityDetail> commodityDetails = stockService.selectStock(commodityDetail);
+        List<CommodityDetail> commodityDetails = stockService.selectStock(CommonUtils.objectToMap(commodityDetail));
         return new MyPage(commodityDetails);
     }
 
@@ -89,11 +87,19 @@ public class OnSaleStockController {
             param.put("onsaleBatchId",onSaleBatchId);
             MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             param.put("onsalePer",userDetails.getRealName());
-            param.put("stocks",stocks);
-            param.put("quantity",stocks.size());
+            param.put("updatePer",userDetails.getRealName());
+            List<String> codes = new ArrayList<>();
+            for(Map<String,String> map : stocks){
+                codes.add(map.get("code"));
+            }
+            param.put("codes",codes);
+            param.put("quantity",codes.size());
             param.put("resourceCode",stocks.get(0).get("siteCode"));
             param.put("resourceName",stocks.get(0).get("siteName"));
+            param.put("siteCode",userDetails.getOrgId());
+            param.put("siteName",userDetails.getOrgName());
             param.put("status",Constant.COMMODITY_STATUS_ON_SALE);
+            param.put("statusBefore",Constant.COMMODITY_STATUS_STORAGED);
             stockService.onSale(param);
             result.setStatusCode(Constant.SUCCESS);
             result.setMessage("上架成功！");

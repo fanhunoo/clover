@@ -27,7 +27,10 @@ public interface StockService {
     /**
      * 查询库存信息
      */
-    List<CommodityDetail> selectStock(CommodityDetail commodityDetail);
+    List<CommodityDetail> selectStock(Map<String,Object> param);
 
     void onSale(Map<String,Object> param)throws Exception;
+
+    void offSale(Map<String,Object> param)throws Exception;
+    void move(Map<String,Object> param)throws Exception;
 }

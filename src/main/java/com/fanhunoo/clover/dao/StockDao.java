@@ -19,7 +19,9 @@ public interface StockDao {
 
     void saveCommodityDetailList(  List<CommodityDetail> commodityDetails) throws Exception;
 
-    List<CommodityDetail> selectStock(CommodityDetail commodityDetail);
+    List<CommodityDetail> selectStock(Map<String,Object> param);
     void saveOnSaleLog(Map<String, Object> param)throws Exception;
+    void saveOffSaleLog(Map<String, Object> param)throws Exception;
+    void saveMoveLog(Map<String, Object> param)throws Exception;
     void updateCommodityDetailList(Map<String, Object> param)throws Exception;
 }
